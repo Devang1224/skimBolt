@@ -1,7 +1,5 @@
 'use client'
-import { api } from '@/utils/axoisInstance';
-import axios from 'axios';
-import { getToken } from 'next-auth/jwt';
+import { api } from '@/utils/axoisInstance';  
 import { signIn, useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -18,11 +16,18 @@ export default function SignIn() {
  
   const saveUserDetails = async()=>{
     const accessToken = session?.accessToken;
+    console.log("running ---------------=======",accessToken)
     try{
-      const res = await api.post('/auth/signin',{accessToken});
-  
-     }catch(err){
+      const res = await api.post('auth/signin',{},{
+        headers:{
+          authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        } 
+        
+    });
 
+     }catch(err){
+        console.log(err);
     }
   }
 
