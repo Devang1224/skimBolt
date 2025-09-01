@@ -2,7 +2,7 @@
 
 chrome.runtime.onInstalled.addListener(({reason})=>{
    if(reason == "install"){
-    //todo: add the website url here
+    console.log("First Install: Opening the signin page");
     chrome.tabs.create({url:`${import.meta.env.VITE_WEB_URL}/signin`})
    }
 })
@@ -10,13 +10,42 @@ chrome.runtime.onInstalled.addListener(({reason})=>{
 chrome.action.onClicked.addListener((tab)=>{
  console.log("Extension icon clicked");
 
-  chrome.sidePanel.setOptions({
-    tabId: tab.id,
-    path: "sidepanel.html",
-  });
+ chrome.storage.local.get("userDetails",(result)=>{
+     if(result?.userDetails?.auth_token){
+       console.log("Token is stored in the extension");
+         chrome.sidePanel.setOptions({
+           tabId: tab.id,
+           path: "sidepanel.html",
+         });
+         chrome.sidePanel.open({ windowId: tab.windowId });
 
-  chrome.sidePanel.open({ windowId: tab.windowId });
+     }else{
+       console.log("No Token found in the extension");
+        if(tab?.id){
+       console.log("Extracting cookie from the site");
+          chrome.cookies.get({ url: `${import.meta.env.VITE_WEB_URL}`, name: "auth-token" }, (cookie) => {
+            if (cookie) {
+                console.log("Extracted Cookie", cookie.value);
+            } else {
+                console.log("No Cookie found in the site asking the user to signing");
+                    chrome.tabs.create({url:`${import.meta.env.VITE_WEB_URL}/signin`})
+            }
+           });
+         }
+      }
+ });
+
 });
+
+chrome.runtime.onMessageExternal.addListener((msg,sender,sendResponse)=>{
+    if(msg.type === "TOKEN_FROM_WEBSITE"){
+          console.log("Got token from website in background.ts:", msg.token);
+          chrome.storage.local.set({userDetails:{auth_token:msg.token}});
+          sendResponse({ok:true});
+    }
+
+})
+
 
 // get the active chrome tab
 chrome.runtime.onMessage.addListener((msg,_sender,sendResponse)=>{

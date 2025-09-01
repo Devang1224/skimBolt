@@ -17,12 +17,16 @@
     "sidePanel",
     "storage",
     "activeTab",
-    "scripting"
+    "scripting",
+    "cookies"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "https://localhost:3000/*"
   ],
   "icons": {
+  },
+  "externally_connectable":{
+     "matches": ["https://localhost:3000/*"] 
   },
   "content_scripts": [
     {
@@ -30,5 +34,5 @@
       "js": ["src/content.ts"],
       "run_at": "document_idle"
     }
-  ]
+  ],
 }
