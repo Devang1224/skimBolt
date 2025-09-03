@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import ChatMain from './pages/ChatMain';
-import { redirectToLogin } from '../helpers/helpers';
 
 function App() {
   
@@ -55,11 +54,6 @@ return (
     <div>
       <h1>Hello World 🚀</h1>
       <p>This is a Chrome Extension built with CRXJS + Vite + React.</p>
-      <div>
-        <button onClick={getAuthToken}>
-          <p>Login</p>
-        </button>
-      </div>
       </div>
     )
   }
