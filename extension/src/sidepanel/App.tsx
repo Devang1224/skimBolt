@@ -15,15 +15,12 @@ const [authToken,setAuthToken] = useState("");
 
 const getStoredToken = async ()=>{
   try{
-     const storedUserDetails = await chrome.storage.local.get('userDetails');
-     console.log("storedUserDetails: ",storedUserDetails?.userDetails);
-     if(storedUserDetails?.userDetails?.auth_token){
-      setAuthToken(storedUserDetails.userDetails.auth_token);
+     const storedUserDetails = await chrome.storage.local.get('auth-token');
+     console.log("storedUserDetails: ",storedUserDetails["auth-token"]);
+     if(storedUserDetails["auth-token"]){
+      setAuthToken(storedUserDetails["auth-token"]);
      }else{
-        // const token = await getAuthToken();
-        // console.log("fetchedToken: ",token);
-    console.log("Error: NO TOKEN");
-        // setAuthToken(token);
+      console.log("error no token");
      }
   }catch(err){
     console.log("err",err);
@@ -32,6 +29,14 @@ const getStoredToken = async ()=>{
 
 useEffect(()=>{
   getStoredToken()
+  
+  const listener = (changes: any, area: string) => {
+    if (area === "local" && changes["auth-token"]) {
+      setAuthToken(changes["auth-token"].newValue || "");
+    }
+  };
+  chrome.storage.onChanged.addListener(listener);
+  return () => chrome.storage.onChanged.removeListener(listener);
   },[])
 
 
@@ -46,13 +51,13 @@ useEffect(()=>{
 
 return (
 
- <div className="p-5 bg-red-500">
+ <div className="p-5">
   {
     authToken ? (
       <ChatMain authToken={authToken}/>
     ):(
     <div>
-      <h1>Hello World 🚀</h1>
+      <h1>LOGIN 🚀</h1>
       <p>This is a Chrome Extension built with CRXJS + Vite + React.</p>
       </div>
     )

@@ -10,6 +10,8 @@ chrome.runtime.onInstalled.addListener(({reason})=>{
 chrome.action.onClicked.addListener((tab)=>{
  console.log("Extension icon clicked");
 
+
+ //auth flow
  chrome.storage.local.get("auth-token",(result)=>{
      if(result["auth-token"]){
        console.log("Token is stored in the extension");
@@ -52,6 +54,20 @@ chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
 
 })
 
+chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
+    if(msg.type === "SIGNOUT_FROM_WEBSITE"){
+          console.log("signing out");
+          chrome.storage.local.remove("auth-token", () => {
+              console.log("auth-token removed");
+            });
+          sendResponse({ok:true});
+    }
+})
+ //auth flow
+
+
+
+ 
 
 // get the active chrome tab
 // chrome.runtime.onMessage.addListener((msg,_sender,sendResponse)=>{
