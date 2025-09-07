@@ -16,6 +16,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@theme {
+  
+}
+
+
 a {
   font-weight: 500;
   color: #646cff;

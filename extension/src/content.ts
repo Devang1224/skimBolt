@@ -20,3 +20,22 @@
 //  }
 // )();
 
+
+function extractTextContent(){
+  console.log("get summary function called");
+    const textContentList = Array.from(document.body.children).map((child)=>{
+      if(child.tagName !== "SCRIPT"){
+          return child.textContent;
+      }
+  });
+  console.log("summary data: ",textContentList);
+}
+
+
+chrome.runtime.onMessage.addListener((msg)=>{
+    if(msg.action === "GET_TEXTCONTENT"){
+        console.log("get summary action triggered");
+        extractTextContent();
+    }
+})
+
