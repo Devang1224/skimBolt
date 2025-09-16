@@ -32,7 +32,7 @@ function extractTextContent(){
 }
 
 
-chrome.runtime.onMessage.addListener((msg)=>{
+chrome.runtime.onMessage.addListener((msg)=>{ 
     if(msg.action === "GET_TEXTCONTENT"){
         console.log("get summary action triggered");
         extractTextContent();
