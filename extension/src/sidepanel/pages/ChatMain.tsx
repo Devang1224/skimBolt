@@ -1,11 +1,12 @@
 import { useState } from "react";
+import SummaryPage from "./SummaryPage";
 
 interface ChatMainTypes {
   authToken: string;
 }
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
-  const [isSummaryActive, setIsSummaryActive] = useState(false);
+  const [isSummaryActive, setIsSummaryActive] = useState(true);
 
   const getSummary = async () => {
     console.log("get summary btn pressed");
@@ -25,7 +26,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   return (
     <div>
       {isSummaryActive ? (
-        <div></div>
+        <SummaryPage/>
       ) : (
         <div>
           <h1>SkimBolt</h1>

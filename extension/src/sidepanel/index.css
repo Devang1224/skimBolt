@@ -8,7 +8,9 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
+  --background-dark: #242424;
+  --background-light:#ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,8 +18,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@theme {
+@theme inline{
   
+  --color-background-light:var(--background-light);
+  --color-background-dark:var(--background-dark);
+
 }
 
 

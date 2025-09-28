@@ -7,49 +7,65 @@ chrome.runtime.onInstalled.addListener(({reason})=>{
    }
 });
 
-chrome.action.onClicked.addListener(async (tab) => {
 
- chrome.storage.local.get("auth-token", (result) => {
-  if (result["auth-token"]) {
-    console.log("Token is stored in the extension");
+
+chrome.action.onClicked.addListener((tab)=>{
+    
+  if(tab.id){
     chrome.sidePanel.setOptions({
-      tabId: tab.id,
-      path: "sidepanel.html",
+      tabId:tab.id,
+      path:"sidepanel.html"
     });
     chrome.sidePanel.open({
-      windowId: tab.windowId
-    });
-  } else {
-    console.log("No Token found in the extension");
-    if (tab?.id) {
-      console.log("Extracting cookie from the site");
-      chrome.cookies.get({ url: import.meta.env.VITE_WEB_URL, name: "auth-token"},
-       (cookie) => {
-        if (cookie) {
-          console.log("Extracted Cookie", cookie.value);
-          chrome.storage.local.set({"auth-token": cookie.value});
-          chrome.sidePanel.setOptions({tabId: tab.id,path: "sidepanel.html"});
-          chrome.sidePanel.open({windowId: tab.windowId});
-        } else {
-          console.log("No Cookie found in the site asking the user to signing");
-          chrome.tabs.create({url: `${import.meta.env.VITE_WEB_URL}/signin`});
-        }
-      });
-    }
+      windowId:tab.windowId
+    })
   }
-});
+})
+
+chrome.runtime.onMessage.addListener((message,_sender,sendResponse) => {
+  console.log("listener is listening");
+ if(message.action === 'fetchAuthToken'){
+   console.log("checking localstorage of extension");
+    chrome.storage.local.get("auth-token", (result) => {
+     if (result["auth-token"]) {
+       console.log("Token is stored in the extension");
+       sendResponse({"auth-token":result["auth-token"]});
+     } else {
+         console.log("No Token found in the extension");
+         console.log("Extracting cookie from the site");
+         chrome.cookies.get({ url: import.meta.env.VITE_WEB_URL, name: "auth-token"},
+          (cookie) => {
+           if (cookie) {
+             console.log("Extracted Cookie", cookie.value);
+             chrome.storage.local.set({"auth-token": cookie.value});
+             sendResponse({"auth-token" : cookie.value});
+             // chrome.sidePanel.setOptions({tabId: tab.id,path: "sidepanel.html"});
+             // chrome.sidePanel.open({windowId: tab.windowId});
+           } else {
+             console.log("No Cookie found in the site asking the user to signing");
+             chrome.tabs.create({url: `${import.meta.env.VITE_WEB_URL}/signin`});
+             sendResponse(false);
+           }
+         });
+       
+     }
+   });
+   return true;
+ }else{
+  console.log("invalid message");
+  sendResponse(false);
+ }
 
 });
 
 
 chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
-    if(msg.type === "TOKEN_FROM_WEBSITE"){
-          console.log("Got token from website in background.ts:", msg.token);
+    if(msg.action === "TOKEN_FROM_WEBSITE"){
+          console.log("Recieved token from the website:", msg.token);
           chrome.storage.local.set({"auth-token":msg.token});
           sendResponse({ok:true});
     }
-
-})
+});
 
 chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
     if(msg.type === "SIGNOUT_FROM_WEBSITE"){
@@ -59,7 +75,7 @@ chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
             });
           sendResponse({ok:true});
     }
-})
+});
  //auth flow
 
 
