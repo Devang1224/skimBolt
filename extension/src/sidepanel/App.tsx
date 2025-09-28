@@ -33,17 +33,10 @@ function App() {
     return () => chrome.storage.onChanged.removeListener(listener);
   }, []);
 
-  // const getAuthToken = async ()=>{
-  //   try{
 
-  //   } catch(err){
-  //     console.log("Login error: ", err);
-  //     redirectToLogin();
-  //   }
-  // }
 
   return (
-    <div className="p-5">
+    <div className="">
       {authToken ? (
         <ChatMain authToken={authToken} />
       ) : (

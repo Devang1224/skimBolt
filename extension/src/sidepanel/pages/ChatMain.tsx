@@ -14,10 +14,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       active: true,
       currentWindow: true,
     });
-    //  await chrome.scripting.executeScript({
-    //   target: { tabId: tab.id! },
-    //   files: ["content.js"],
-    // });
+    
     chrome.tabs.sendMessage(tab.id!, { action: "GET_TEXTCONTENT" });
     setIsSummaryActive(true);
   };
