@@ -52,7 +52,7 @@
 }
 
 .scrollbar_custom::-webkit-scrollbar-thumb {
-  background-color: #888; /* color of the thumb */
+  background-color: #f21818; /* color of the thumb */
   border-radius: 8px;     
   border: 2px solid #f0f0f0; /* adds padding inside thumb */
 }
@@ -63,6 +63,7 @@
 
 /* For Firefox */
 .scrollbar_custom {
-  scrollbar-width: thin; /* thin, auto, none */
-  scrollbar-color: #888 #f0f0f0; /* thumb track */
+  scrollbar-width: thin; 
+  scrollbar-color: #817e7e8c #f0f0f0; 
+
 }
