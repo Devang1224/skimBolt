@@ -23,11 +23,15 @@ declare global {
   namespace Express {
     export interface Request {
       user: {
+        id:string;
         name: string;
         email: string;
         provider: Provider;
         providerAccountId: string;
         auth_token: string;
+        hasSubscription: boolean,
+        subscriptionEndsAt:string | null;
+        usage:number;
       };
     }
   }
@@ -42,7 +46,8 @@ app.use("/api/v1/extension-token", sendExtensionToken);
 
 
 app.use("/api/v1/auth",authenticateUser,authRouter);
-app.use("/api/v1/summary",authenticateUser,summaryRouter);
+// app.use("/api/v1/summary",authenticateUser,summaryRouter);
+app.use("/api/v1/summary",summaryRouter);
 
 
 

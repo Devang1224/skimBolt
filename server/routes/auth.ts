@@ -36,6 +36,7 @@ router.post('/signin',async (req:Request,res:Response):Promise<any> => {
         })
 
     }catch(err){
+        console.log("🔴 signin error:",err);
          res.status(500).json({
             success:false,
             message:'Something went wrong'
