@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import base64 from "base-64";
 import getRedisClient from "../lib/redis";
+import prisma from "../lib/db";
 
 const router = express.Router();
 
@@ -36,10 +37,20 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
       const redis = await getRedisClient();
       if(!redis)return null;
 
+      // TODO: generate summary and store it in the redis
+      const summary = " ";
+
+    //   redis.lPush(`context:${hashedUrl}:user:${"h1rYJ7efQy0xK6brW"}`,JSON.stringify(summary));
+    const response = await prisma.summary.create({
+        data: {
+            urlHash:hashedUrl,
+            url:url,
+            summary:summary,
+            userId:user.id,
+        }
+    })
+    redis.set(`context:${hashedUrl}:user:${"h1rYJ7efQy0xK6brW"}:summary`,JSON.stringify(summary));
       
-
-
-      redis.set(`context:${hashedUrl}:user:${"h1rYJ7efQy0xK6brW"}`,JSON.stringify(textContent));
 
     return res.status(200);
         

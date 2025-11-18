@@ -22,9 +22,37 @@ model User {
   hasSubscription Boolean @default(false)
   subscriptionEndsAt DateTime?
   usage Int @default(5) 
+  summaries Summary[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+}
+
+model Summary {
+  id  String  @id @default(uuid())
+  urlHash String
+  url String
+  userId  String
+  user  User @relation(fields:[userId],references:[id])
+  summary String
+  summaryQuestion  SummaryQuestion[]
+  createdAt DateTime @default(now())
+
+  @@index ([urlHash])
+  @@unique([userId,urlHash])
+}
+
+model SummaryQuestion {
+ id String  @id @default(uuid()) 
+ summaryId  String
+ summary  Summary @relation(fields:[summaryId],references:[id])
+ aiAnswer String
+ userQuestion String
+ createdAt  DateTime  @default(now())
+
+@@index([summaryId])
+@@index([summaryId,createdAt])
+
 }
 
 enum Provider {
