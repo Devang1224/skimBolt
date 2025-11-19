@@ -4,12 +4,42 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
+declare const chrome: any;
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {data: session} = useSession();
 
 console.log('session',session)
+
+const handleSignOut = async ()=>{
+  try{
+    const res = await signOut();
+      if(
+          typeof chrome !== "undefined" &&
+          chrome.runtime &&
+          chrome.runtime.sendMessage
+        ) {
+          chrome.runtime.sendMessage(
+             process.env.NEXT_PUBLIC_EXTENSION_ID , // extension id
+            {
+              type: "SIGNOUT_FROM_WEBSITE",
+            },
+            (response: any) => {
+              console.log("Extension response:", response);
+              // clearing the cookie
+              document.cookie = "auth-token=; domain=localhost; samesite=strict; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+
+            }
+          );
+        } else {
+          console.warn("Extension not installed or not accessible.");
+        }
+
+  }catch(err){
+    console.log("signout error: ",err);
+  }
+}
 
   return (
     <nav className="h-20 bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
@@ -48,7 +78,7 @@ console.log('session',session)
               session?.user?.email ? (
                 <button className="cursor-pointer bg-gradient-to-r from-pink-500
                   via-purple-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
-                  onClick={() => signOut()}
+                  onClick={() => handleSignOut()}
                   >
                     Sign Out
                 </button>

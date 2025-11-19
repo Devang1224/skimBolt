@@ -6,7 +6,7 @@ interface ChatMainTypes {
 }
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
-  const [isSummaryActive, setIsSummaryActive] = useState(true);
+  const [isSummaryActive, setIsSummaryActive] = useState(false);
 
   const getSummary = async () => {
     console.log("get summary btn pressed");

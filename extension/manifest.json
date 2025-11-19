@@ -35,6 +35,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "all_frames":true,
       "js": ["src/content.ts"],
       "run_at": "document_idle"
     }

@@ -76,7 +76,14 @@ chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
           sendResponse({ok:true});
     }
 });
- //auth flow
+
+// manually reinject script on SPA navigation
+chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+  chrome.scripting.executeScript({
+    target: { tabId: details.tabId },
+    files: ["content.js"]
+  });
+});
 
 
 

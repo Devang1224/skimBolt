@@ -14,14 +14,17 @@ export const authOptions:NextAuthOptions  =
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      checks:['none'],
     }),
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID!,
       clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+      checks:['none'],
     }),
     AppleProvider({
       clientId: process.env.APPLE_CLIENT_ID!,
       clientSecret: process.env.APPLE_CLIENT_SECRET!,
+      checks:['none'],
     }),
   ],
   pages: {

@@ -1,6 +1,9 @@
 
 // const BASE_URL =  "http://localhost:3000";
 
+import { Readability } from "@mozilla/readability";
+
+console.log("CONTENT SCRIPT INJECTED");
 // (function extractTokenFromWebsite(){
 //    try{
 //         const match = document.cookie.match(/auth-token=([^;]+)/);
@@ -23,12 +26,12 @@
 
 function extractTextContent(){
   console.log("get summary function called");
-    const textContentList = Array.from(document.body.children).map((child)=>{
-      if(child.tagName !== "SCRIPT"){
-          return child.textContent;
-      }
-  });
-  console.log("summary data: ",textContentList);
+ 
+  const doc = document.implementation.createHTMLDocument();
+  doc.documentElement.innerHTML = document.documentElement.outerHTML;
+  const article = new Readability(doc).parse()?.textContent;
+  console.log("ARTICLE: ",article)
+  return article;
 }
 
 
