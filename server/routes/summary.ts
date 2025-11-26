@@ -16,43 +16,45 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             url
         } = req.body;
         const user = req.user;
-/*
-   -> make a hash out of url 
-   -> create a redis key to store contexts inside it "context:{urlHash}:user:{userId}"
-   -> if the there is no data regarding the site  
-   ->   find the context in the db for that site if exists
-   ->   if it exists 
-   ->       use that context 
-   ->   else
-   ->       make a unique key for that site and start storing the context
-   -> else
-   ->   use the available context 
-   -> the ttl of the context would be 5 hrs after that clear the data from the redis
-   -> when the 5 context limit reached generate a new context out of the previous 5 contexts and store it in place of the previous contexts
-   
-        
-*/
-      var hashedUrl = base64.encode(url);
+
+
+      const hashedUrl = base64.encode(url);
+      const key = `context:${hashedUrl}:user:${user.id}:summary`;
     
       const redis = await getRedisClient();
       if(!redis)return null;
-
+     
       // TODO: generate summary and store it in the redis
+      // TODO: do chunking if the text size is greater than 100kb 
       const summary = " ";
 
-    //   redis.lPush(`context:${hashedUrl}:user:${"h1rYJ7efQy0xK6brW"}`,JSON.stringify(summary));
-    const response = await prisma.summary.create({
-        data: {
+    const response = await prisma.summary.upsert({
+        where:{
+            userId_urlHash:{
+                userId:user.id,
+                urlHash:hashedUrl
+            },
+        },
+        update:{
+            summary:summary,
+            url:url
+        },
+        create: {
             urlHash:hashedUrl,
             url:url,
             summary:summary,
             userId:user.id,
         }
     })
-    redis.set(`context:${hashedUrl}:user:${"h1rYJ7efQy0xK6brW"}:summary`,JSON.stringify(summary));
-      
+     await redis.set( key,JSON.stringify(summary),{
+        EX:6*60*60 // 6 hours
+     });  
 
-    return res.status(200);
+    return res.status(200).json({
+        message:"Generated summary successfully",
+        aiResp:summary,
+        success:true
+    });
         
     }catch(err){
         res.status(500).json({
