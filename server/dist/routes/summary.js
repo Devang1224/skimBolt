@@ -14,38 +14,66 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const base_64_1 = __importDefault(require("base-64"));
-const redis_1 = __importDefault(require("../lib/redis"));
+const db_1 = __importDefault(require("../lib/db"));
+const geminiApi_1 = require("../lib/geminiApi");
 const router = express_1.default.Router();
 router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { length, language, tone, textContent, url } = req.body;
         const user = req.user;
-        /*
-           -> make a hash out of url
-           -> create a redis key to store contexts inside it "context:{urlHash}:user:{userId}"
-           -> if the there is no data regarding the site
-           ->   find the context in the db for that site if exists
-           ->   if it exists
-           ->       use that context
-           ->   else
-           ->       make a unique key for that site and start storing the context
-           -> else
-           ->   use the available context
-           -> the ttl of the context would be 5 hrs after that clear the data from the redis
-           -> when the 5 context limit reached generate a new context out of the previous 5 contexts and store it in place of the previous contexts
-           
-                
-        */
-        var hashedUrl = base_64_1.default.encode(url);
-        const redis = yield (0, redis_1.default)();
-        if (!redis)
-            return null;
-        redis.set(`context:${hashedUrl}:user:${user.id}`, JSON.stringify(textContent));
+        const hashedUrl = base_64_1.default.encode(url);
+        //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
+        //   const redis = await getRedisClient();
+        //   if(!redis)return null;
+        // TODO: generate summary and store it in the redis
+        // TODO: do chunking if the text size is greater than 100kb 
+        const modelOutput = yield (0, geminiApi_1.accessModel)(textContent);
+        if (modelOutput) {
+            return res.status(200).json({
+                message: "summarized successfully",
+                sucesss: true,
+                summary: modelOutput
+            });
+        }
+        const summary = " ";
+        if (!summary) {
+            return res.status(500).json({
+                message: "Summary cannot be created",
+                success: false
+            });
+        }
+        const response = yield db_1.default.summary.upsert({
+            where: {
+                userId_urlHash: {
+                    userId: user.id,
+                    urlHash: hashedUrl
+                },
+            },
+            update: {
+                summary: summary,
+                url: url
+            },
+            create: {
+                urlHash: hashedUrl,
+                url: url,
+                summary: summary,
+                userId: user.id,
+            }
+        });
+        //  await redis.set( key,JSON.stringify(summary),{
+        //     EX:6*60*60 // 6 hours
+        //  });  
+        return res.status(200).json({
+            message: "Generated summary successfully",
+            aiResp: summary,
+            success: true
+        });
     }
     catch (err) {
-        res.status(500).json({
+        console.log("🔴 Error: ", err);
+        return res.status(500).json({
             success: false,
-            message: "Something went wrong"
+            message: "Something went wrong",
         });
     }
 }));

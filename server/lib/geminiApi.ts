@@ -5,15 +5,15 @@ import { GET_SUMMARY } from "../prompt";
 
 const ai = new GoogleGenAI({});
 
-export async function accessModel() {
+export async function accessModel(content:string) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: "Explain how AI works in a few words", // blog text
+    contents: content, // blog text
     config:{
         systemInstruction: GET_SUMMARY 
     }
   });
-  console.log(response.text);
+  return response;
 }
 
 

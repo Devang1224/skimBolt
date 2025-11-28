@@ -53,7 +53,7 @@ function authenticateUser(req, res, next) {
             next();
         }
         catch (err) {
-            console.log("jwt error", err);
+            console.log("🔴 jwt error", err);
             res.status(500).json({
                 message: "Something went wrong with JWT",
             });
