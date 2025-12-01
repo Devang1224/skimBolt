@@ -21,7 +21,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
 
       const hashedUrl = base64.encode(url);
-      const key = `context:${hashedUrl}:user:${user.id}:summary`;
+    //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
     
       const redis = await getRedisClient();
       if(!redis)return null;
@@ -32,7 +32,8 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
         if(modelOutput){
             return res.status(200).json({
                 message:"summarized successfully",
-                sucesss:true
+                sucesss:true,
+                aiResp:modelOutput,
             })
         }
 
@@ -40,7 +41,8 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
        if(!summary){
         return res.status(500).json({
             message:"Summary cannot be created",
-            success:false
+            success:false,
+            aiResp:modelOutput,
         })
        }
     const response = await prisma.summary.upsert({
@@ -61,9 +63,9 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             userId:user.id,
         }
     })
-     await redis.set( key,JSON.stringify(summary),{
-        EX:6*60*60 // 6 hours
-     });  
+    //  await redis.set( key,JSON.stringify(summary),{
+    //     EX:6*60*60 // 6 hours
+    //  });  
 
     return res.status(200).json({
         message:"Generated summary successfully",

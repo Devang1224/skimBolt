@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const base_64_1 = __importDefault(require("base-64"));
+const redis_1 = __importDefault(require("../lib/redis"));
 const db_1 = __importDefault(require("../lib/db"));
 const geminiApi_1 = require("../lib/geminiApi");
 const router = express_1.default.Router();
@@ -23,8 +24,9 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         const user = req.user;
         const hashedUrl = base_64_1.default.encode(url);
         //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
-        //   const redis = await getRedisClient();
-        //   if(!redis)return null;
+        const redis = yield (0, redis_1.default)();
+        if (!redis)
+            return null;
         // TODO: generate summary and store it in the redis
         // TODO: do chunking if the text size is greater than 100kb 
         const modelOutput = yield (0, geminiApi_1.accessModel)(textContent);
@@ -32,14 +34,15 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
             return res.status(200).json({
                 message: "summarized successfully",
                 sucesss: true,
-                summary: modelOutput
+                aiResp: modelOutput,
             });
         }
         const summary = " ";
         if (!summary) {
             return res.status(500).json({
                 message: "Summary cannot be created",
-                success: false
+                success: false,
+                aiResp: modelOutput,
             });
         }
         const response = yield db_1.default.summary.upsert({
