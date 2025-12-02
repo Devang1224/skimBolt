@@ -18,7 +18,8 @@
     "storage",
     "activeTab",
     "scripting",
-    "cookies"
+    "cookies",
+    "webNavigation"
   ],
   "host_permissions": [
      "http://localhost:3000/*",

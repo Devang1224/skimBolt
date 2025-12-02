@@ -35,10 +35,11 @@ function extractTextContent(){
 }
 
 
-chrome.runtime.onMessage.addListener((msg)=>{ 
+chrome.runtime.onMessage.addListener((msg,_sender,sendResponse)=>{ 
     if(msg.action === "GET_TEXTCONTENT"){
         console.log("get summary action triggered");
-        extractTextContent();
+        const article = extractTextContent();
+        sendResponse({article});
     }
 })
 

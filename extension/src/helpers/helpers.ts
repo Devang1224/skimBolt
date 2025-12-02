@@ -4,11 +4,19 @@ function redirectToLogin() {
 }
 
 
-
+function safeJsonParse<T>(str: string): T {
+  try {
+    return JSON.parse(str);
+  } catch (err) {
+    console.error("Invalid JSON returned by AI:", err);
+    throw new Error("AI returned invalid JSON.");
+  }
+}
 
 
 export {
-    redirectToLogin
+    redirectToLogin,
+    safeJsonParse
 }
 
 
