@@ -93,9 +93,32 @@ const SummaryPage = ({
               >
                 <div className="prose prose-slate max-w-none break-words">
                   <h2 className="text-md font-semibold text-blue-800 mb-4">AI-Powered Blog Summary</h2>
-                  <p className="text-slate-700 leading-relaxed mb-4 text-sm">
-                    {blogSummary}
-                  </p>
+                  {/* <p className="text-slate-700 leading-relaxed mb-4 text-sm" dangerouslySetInnerHTML={{__html: blogSummary}}/> */}
+                  <p className="text-slate-700 leading-relaxed mb-4 text-sm"><h2>How to Start a Blog: A Comprehensive Guide for Beginners</h2>
+<p>This guide provides a detailed, beginner-friendly walkthrough on creating a blog in approximately 20 minutes, covering essential steps from selecting a blog name and securing hosting to customizing the design, publishing content, promoting it effectively, and exploring various monetization strategies. It emphasizes that a passion for the topic is key to success, not necessarily expert writing skills, and encourages aspiring bloggers to leverage the current growth of online audiences.</p>
+
+<h2>Key Points</h2>
+<ul>
+<li>Starting a blog involves six core steps: picking a name, getting it online (hosting/domain), customizing the design, writing the first post, promoting it, and exploring monetization.</li>
+<li>Successful blogging primarily requires a <mark>passion</mark> for the chosen topic and allows for writing in an informal, conversational style, rather than needing to be a great writer or expert.</li>
+<li>A blog is a type of <mark>website</mark> focused on written <mark>content</mark> (blog posts), often from a personal perspective, and typically includes a comments section for direct reader interaction.</li>
+<li>To establish a blog online, you need <mark>domain registration</mark>, <mark>blog hosting</mark>, and blogging software like <mark>WordPress</mark>, which are often bundled together by providers such as BlueHost.</li>
+<li><mark>WordPress themes</mark> allow easy customization of a blog's entire layout and design, with thousands of free options available to change the appearance with a few clicks.</li>
+<li>Blogs should incorporate both static content (e.g., About Me, Contact, Disclaimer, Privacy Policy) and dynamic content (regularly published blog posts) for completeness and engagement.</li>
+<li>Effective blog posts should feature alluring titles, be lengthy yet broken into short paragraphs with headings and images, engage readers with questions, and always contain original content and photos.</li>
+<li>Promoting a blog involves alerting an inner circle, utilizing <mark>social media</mark>, commenting on other blogs, actively engaging with visitors, collaborating with fellow bloggers, posting regularly, and building an <mark>email list</mark>.</li>
+<li><mark>SEO</mark> (Search Engine Optimization) for a new blog includes using header tags, categorizing content, and setting permalinks to improve visibility in search engine results over time.</li>
+<li>Monetization strategies for blogs include selling <mark>advertising space</mark> (e.g., Google Adsense), <mark>affiliate products</mark>, direct products/services, digital downloads (like ebooks), or offering paid memberships for exclusive content.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li>Blogging is highly accessible to beginners, requiring only basic computer skills and offering a quick setup process.</li>
+<li>A blog serves as a versatile platform for sharing knowledge, fostering community, gaining recognition, and generating passive income.</li>
+<li>Consistent content creation and proactive promotion across various channels are vital for growing a blog's audience and maintaining engagement.</li>
+<li>Including essential static pages like a Disclaimer and Privacy Policy is crucial, especially for blogs that monetize or collect user data, to comply with legal guidelines.</li>
+<li>Building a loyal audience and trust with readers is a foundational step before successfully implementing various monetization strategies.</li>
+</ul></p>
                 </div>
               </div>
             )}

@@ -1,17 +1,19 @@
 import axios from "axios";
 
-let authToken = "";
-
- chrome.storage.local.get("auth-token", (result) => {
-    if (result["auth-token"]) {
-        authToken = result["auth-token"];
-      console.log("Token is stored in the extension");
-    }
-})
 
 export const userApi = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
-    headers: {
-        "Authorization": `Bearer ${authToken}`
-    }
+})
+
+userApi.interceptors.request.use(async(config)=>{
+    return new Promise((resolve)=>{
+        chrome.storage.local.get("auth-token", (result) => {
+            const token  = result['auth-token'];
+            if(token){
+                config.headers = config.headers || {};
+                config.headers.Authorization = `Bearer ${token}`
+            }
+            resolve(config);
+        })
+    })
 })
