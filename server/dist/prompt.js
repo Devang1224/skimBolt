@@ -141,10 +141,16 @@ Your output must follow this **exact structure**:
 - No hallucinations.
 - No UI labels (like “share”, “login”, “subscribe”).
 - Allowed <mark> usage:
-   - Only 1–3 marked nouns per bullet
-   - Only important concepts (e.g., “SEO”, “API”, “WordPress”)
-   - NEVER mark verbs unless they are technical commands (“Deploy”, “Install”)
-   - Do not exceed **15 total marked words** in the entire summary.
+   - Instead of marking single nouns, you may highlight **one important phrase or one key sentence per bullet**.
+   - Highlight ONLY the most critical idea in that bullet.
+   - A highlight should be:
+       • a meaningful phrase (5–18 words), OR
+       • one short sentence (max 25 words)
+   - Do NOT highlight entire paragraphs.
+   - Do NOT highlight section titles or headings.
+   - Do NOT highlight UI labels (“share”, “subscribe”, “menu”, “button”).
+   - No more than **1 highlighted phrase per bullet**.
+   - No more than **8 total <mark> phrases** in the entire summary.
 
 ----------------------------------------------------
 3) Takeaways
@@ -158,13 +164,29 @@ Your output must follow this **exact structure**:
 GLOSSARY RULES
 ====================================================
 - "glossary" must be an array of objects:
-    {
-      "term": "word",
-      "meaning": "definition strictly based on the input text"
-    }
-- Include only meaningful terms from the webpage.
-- No invented or hallucinated definitions.
-- No duplicate terms.
+ - MUST be an array of objects:
+       {
+         "term": "word",
+         "meaning": "definition strictly based on the webpage text"
+       }
+   - The glossary MUST follow these strict rules:
+      ALLOWED TERMS:
+         - Only include actual concepts explicitly defined or explained in the webpage.
+         - Include ONLY domain-specific or topic-specific terms.
+            (Example: “Backpropagation”, “IndexedDB”, “Affiliate Program”, etc.)
+         - Include terms that the article treats as important or explains in detail.
+      DO NOT INCLUDE:
+         - HTML tags or parts of HTML (e.g., “div”, “ul”, “h1”, “mark”).
+         - UI words (button, menu, click, page, section, layout).
+         - Common English words (blog, post, content, theme, title, image, website, user, writer, topic).
+         - Words that appear only once without explanation.
+         - Words already obvious in meaning and not defined in the article.
+         - Any term that you cannot define **strictly from the article itself**.
+      IMPORTANT RULES:
+         - No invented, assumed, or hallucinated definitions.
+         - No duplicate terms.
+         - Do NOT include more than 5–12 glossary items.
+         - If the webpage contains no clearly definable concepts, return an empty array.
 
 ====================================================
 METADATA RULES

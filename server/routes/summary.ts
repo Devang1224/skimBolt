@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 import base64 from "base-64";
 import getRedisClient from "../lib/redis";
 import prisma from "../lib/db";
-import { accessModel } from "../lib/geminiApi";
+import { generateSummary } from "../helpers/generateSummary";
+
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
      
       // TODO: generate summary and store it in the redis
       // TODO: do chunking if the text size is greater than 100kb 
-      const modelOutput = await accessModel(textContent);
+      const modelOutput = await generateSummary(textContent,tone,length,language);
         if(modelOutput){
             return res.status(200).json({
                 message:"summarized successfully",
