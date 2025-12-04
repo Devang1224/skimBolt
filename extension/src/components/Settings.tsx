@@ -13,15 +13,23 @@ interface SettingsProps {
     isSettingsOpen:boolean
 }
 
+type Tone = 'neutral' | 'formal' | 'expert' | 'beginner' | 'casual';
 
 const Settings = ({
     isSettingsOpen,
 }:SettingsProps) => {
   
   const [summaryLength, setSummaryLength] = useState('medium');
-  const [tone, setTone] = useState('balanced');
+  const [tone, setTone] = useState<Tone>('neutral');
   const [language, setLanguage] = useState('en');
 
+   const TONES: Tone[] = [
+    "formal",
+    "casual",
+    "beginner",
+    "expert",
+    "neutral",
+  ];
 
   return (
     <div className={`${isSettingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'} transition-all duration-300 absolute top-12 left-0 right-0 z-10`}>
@@ -34,7 +42,7 @@ const Settings = ({
         </div>
         <button
           type="button"
-          onClick={() => { setSummaryLength('medium'); setLanguage('en'); setTone('balanced'); }}
+          onClick={() => { setSummaryLength('medium'); setLanguage('en'); setTone('neutral'); }}
           className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded-md hover:bg-blue-50 transition-colors"
           aria-label="Reset settings to defaults"
         >
@@ -72,11 +80,11 @@ const Settings = ({
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Language"
             >
-              <option value="en">English</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="zh">Chinese</option>
+              <option value="english">English</option>
+              <option value="spanish">Spanish</option>
+              <option value="french">French</option>
+              <option value="german">German</option>
+              <option value="chinese">Chinese</option>
             </select>
           </div>
         </div>
@@ -88,15 +96,15 @@ const Settings = ({
             <MdOutlineRecordVoiceOver size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-500" />
             <select
               value={tone}
-              onChange={(e) => setTone(e.target.value)}
+              onChange={(e) => setTone(e.target.value as Tone)}
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Tone"
             >
-              <option value="formal">Formal</option>
-              <option value="casual">Casual</option>
-              <option value="beginner">Beginner</option>
-              <option value="expert">Expert</option>
-              <option value="balanced">Balanced</option>
+               {TONES?.map((tone) => (
+                  <option key={tone} value={tone}>
+                     {tone[0].toUpperCase() + tone.slice(1)}
+                   </option>
+               ))}
             </select>
           </div>
         </div>

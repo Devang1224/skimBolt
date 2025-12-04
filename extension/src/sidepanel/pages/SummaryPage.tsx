@@ -12,16 +12,19 @@ import { IoMdSend } from "react-icons/io";
 import Glossary from '../../components/Glossary';
 import Settings from '../../components/Settings';
 import MenuBar from '../../components/MenuBar';
-import FactCheck from '../../components/FactCheck';
-import Insights from '../../components/Insights';
+// import FactCheck from '../../components/FactCheck';
+// import Insights from '../../components/Insights';
+import type { GlossaryItem } from '../../types';
 
 
 interface SummaryPageProps {
-  blogSummary:string
+  blogSummary:string,
+  blogGlossary: GlossaryItem[]
 }
 
 const SummaryPage = ({
-  blogSummary
+  blogSummary,
+  blogGlossary
 }:SummaryPageProps) => {  
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [activeTab, setActiveTab] = useState('summary');
@@ -49,6 +52,7 @@ const SummaryPage = ({
   //   { id: 'glossary', label: 'Glossary', icon: MdOutlineMenuBook }
   // ];
 
+  console.log(blogSummary,blogGlossary);
   return (
     <div className='bg-gray-600'>
 
@@ -75,7 +79,7 @@ const SummaryPage = ({
 
       <div className="flex-1 flex flex-col min-h-0">
         
-        <div className="flex-1  p-1 ">
+        <div className="flex-1 p-1 ">
           <div className="w-full max-w-none">
 
            <MenuBar
@@ -85,16 +89,17 @@ const SummaryPage = ({
 
 
             {activeTab === 'summary' && (
-              <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 shadow-sm overflow-y-auto max-h-[calc(100vh-200px)] scrollbar_custom"
+              <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 
+               shadow-sm overflow-y-auto h-[calc(100vh-170px)] scrollbar_custom"
                style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: '#817e7e8c #f0f0f0'
                }}
               >
-                <div className="prose prose-slate max-w-none break-words">
-                  <h2 className="text-md font-semibold text-blue-800 mb-4">AI-Powered Blog Summary</h2>
-                  {/* <p className="text-slate-700 leading-relaxed mb-4 text-sm" dangerouslySetInnerHTML={{__html: blogSummary}}/> */}
-                  <p className="text-slate-700 leading-relaxed mb-4 text-sm"><h2>How to Start a Blog: A Comprehensive Guide for Beginners</h2>
+                <div className="max-w-none break-words">
+
+                  <p className="text-slate-700 leading-relaxed mb-4 text-sm" dangerouslySetInnerHTML={{__html: blogSummary}}/>
+                  {/* <p className="text-slate-700 leading-relaxed mb-4 text-sm text-left"><h2>How to Start a Blog: A Comprehensive Guide for Beginners</h2>
 <p>This guide provides a detailed, beginner-friendly walkthrough on creating a blog in approximately 20 minutes, covering essential steps from selecting a blog name and securing hosting to customizing the design, publishing content, promoting it effectively, and exploring various monetization strategies. It emphasizes that a passion for the topic is key to success, not necessarily expert writing skills, and encourages aspiring bloggers to leverage the current growth of online audiences.</p>
 
 <h2>Key Points</h2>
@@ -118,15 +123,15 @@ const SummaryPage = ({
 <li>Consistent content creation and proactive promotion across various channels are vital for growing a blog's audience and maintaining engagement.</li>
 <li>Including essential static pages like a Disclaimer and Privacy Policy is crucial, especially for blogs that monetize or collect user data, to comply with legal guidelines.</li>
 <li>Building a loyal audience and trust with readers is a foundational step before successfully implementing various monetization strategies.</li>
-</ul></p>
+</ul></p> */}
                 </div>
               </div>
             )}
 
 
-            {activeTab === 'insights' && <Insights/>}
-            {activeTab === 'fact-check' && <FactCheck />}
-            {activeTab === 'glossary' && <Glossary />}
+            {/* {activeTab === 'insights' && <Insights/>} */}
+            {/* {activeTab === 'fact-check' && <FactCheck />} */}
+            {activeTab === 'glossary' && <Glossary blogGlossary={blogGlossary} />}
           </div>
         </div>
 

@@ -3,7 +3,7 @@ import { MdOutlineFormatListBulleted } from 'react-icons/md'
 
 const Insights = () => {
   return (
-    <div className="mt-4 bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 shadow-sm overflow-y-auto max-h-[calc(100vh-200px)] scrollbar_custom">
+    <div className="mt-4 bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 shadow-sm overflow-y-auto h-[calc(100vh-170px)] scrollbar_custom">
     <h3 className="text-md font-semibold text-slate-800 mb-3 flex items-center space-x-2 ">
       <MdOutlineFormatListBulleted className="text-blue-500" size={15} />
       <span>Key Insights</span>

@@ -1,10 +1,10 @@
 
-interface GlossaryItem {
+export interface GlossaryItem {
     term: string;
     meaning: string;
   }
   
- interface Metadata {
+ export interface Metadata {
     word_count: number;
     detected_language: string;
     content_quality: string;

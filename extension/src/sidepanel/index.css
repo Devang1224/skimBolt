@@ -41,6 +41,31 @@ h1 {
   line-height: 1.1;
 }
 
+h2{
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #111;
+  text-align: center;
+}
+
+ ul {
+  margin-bottom: 1rem;
+  list-style-type:disc !important;
+  margin-left: 1.2rem !important;
+}
+
+ li {
+  margin-bottom: 0.4rem;
+}
+
+ mark {
+  background-color: #8bd7e46e;
+  padding: 5px;
+  border-radius:2px 0px;
+}
+
 
 
 @media (prefers-color-scheme: light) {

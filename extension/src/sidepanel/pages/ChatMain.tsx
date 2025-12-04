@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SummaryPage from "./SummaryPage";
 import { fetchSummary } from "../../services/fetchSummary";
+import type { GlossaryItem } from "../../types";
 
 interface ChatMainTypes {
   authToken: string;
@@ -12,6 +13,7 @@ interface TextContentResponse {
 const ChatMain = ({ authToken }: ChatMainTypes) => {
   const [isSummaryActive, setIsSummaryActive] = useState(false);
   const [blogSummary,setBlogSummary] = useState("");
+  const [blogGlossary,setBlogGlossary] = useState<GlossaryItem[]>([]);
 
 
 
@@ -55,6 +57,9 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       }
       console.log("fetched summary: ",data);
       setBlogSummary(data.summary);
+      if(data?.glossary?.length){
+        setBlogGlossary([...data.glossary]);
+      }
       setIsSummaryActive(true);
 
     }catch(err){
@@ -66,11 +71,11 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   return (
     <div>
       {isSummaryActive ? (
-        <SummaryPage blogSummary={blogSummary}/>
+        <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       ) : (
         <div>
           <h1>SkimBolt</h1>
-          <button onClick={getSummary} className="mt-4">
+          <button onClick={getSummary} className="mt-4 hover:cursor-pointer">
             Get Summary
           </button>
         </div>

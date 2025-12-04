@@ -16,7 +16,7 @@ const MenuBar = ({
       <div className="inline-flex rounded-md border border-blue-100 bg-white/70 p-0.5 shadow-sm">
         {[
           { id: 'summary', label: 'Summary' },
-          { id: 'insights', label: 'Insights' },
+          // { id: 'insights', label: 'Insights' },
           { id: 'glossary', label: 'Glossary' },
         ].map((seg) => (
           <button
