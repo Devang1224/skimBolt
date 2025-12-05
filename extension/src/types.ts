@@ -16,3 +16,10 @@ export interface SummaryResponse {
   metadata: Metadata;
 }
   
+export type Tone = 'neutral' | 'formal' | 'expert' | 'beginner' | 'casual';
+
+export interface Settings {
+  language: string;
+  tone: Tone;
+  length: string;
+}

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { BiTime } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
 
@@ -8,20 +7,24 @@ import {
     MdOutlineLanguage,
     MdOutlineRecordVoiceOver
   } from "react-icons/md";
+import type { Tone } from '../types';
+import { useSettings } from '../context/SettingsContext';
 
 interface SettingsProps {
     isSettingsOpen:boolean
 }
 
-type Tone = 'neutral' | 'formal' | 'expert' | 'beginner' | 'casual';
+
 
 const Settings = ({
     isSettingsOpen,
 }:SettingsProps) => {
   
-  const [summaryLength, setSummaryLength] = useState('medium');
-  const [tone, setTone] = useState<Tone>('neutral');
-  const [language, setLanguage] = useState('en');
+  // const [summaryLength, setSummaryLength] = useState('medium');
+  // const [tone, setTone] = useState<Tone>('neutral');
+  // const [language, setLanguage] = useState('en');
+  const {settings,setSettings} = useSettings();
+
 
    const TONES: Tone[] = [
     "formal",
@@ -42,7 +45,7 @@ const Settings = ({
         </div>
         <button
           type="button"
-          onClick={() => { setSummaryLength('medium'); setLanguage('en'); setTone('neutral'); }}
+          onClick={() => { setSettings({language:"english",length:"medium",tone:"neutral"})}}
           className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded-md hover:bg-blue-50 transition-colors"
           aria-label="Reset settings to defaults"
         >
@@ -57,8 +60,8 @@ const Settings = ({
           <div className="relative">
             <BiTime size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-500" />
             <select
-              value={summaryLength}
-              onChange={(e) => setSummaryLength(e.target.value)}
+              value={settings.length}
+              onChange={(e) => setSettings({...settings,length:e.target.value})}
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Summary length"
             >
@@ -75,8 +78,8 @@ const Settings = ({
           <div className="relative">
             <MdOutlineLanguage size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-500" />
             <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              value={settings.language}
+              onChange={(e) => setSettings({...settings, language:e.target.value.trim()})}
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Language"
             >
@@ -85,6 +88,25 @@ const Settings = ({
               <option value="french">French</option>
               <option value="german">German</option>
               <option value="chinese">Chinese</option>
+              <option value="hindi">Hindi</option>
+              <option value="japanese">Japanese</option>
+              <option value="korean">Korean</option>
+              <option value="italian">Italian</option>
+              <option value="portuguese">Portuguese</option>
+              <option value="russian">Russian</option>
+              <option value="arabic">Arabic</option>
+              <option value="bengali">Bengali</option>
+              <option value="urdu">Urdu</option>
+              <option value="turkish">Turkish</option>
+              <option value="thai">Thai</option>
+              <option value="vietnamese">Vietnamese</option>
+              <option value="indonesian">Indonesian</option>
+              <option value="dutch">Dutch</option>
+              <option value="polish">Polish</option>
+              <option value="swedish">Swedish</option>
+              <option value="filipino">Filipino</option>
+              <option value="romanian">Romanian</option>
+              <option value="ukrainian">Ukrainian</option>                  
             </select>
           </div>
         </div>
@@ -95,8 +117,8 @@ const Settings = ({
           <div className="relative">
             <MdOutlineRecordVoiceOver size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-500" />
             <select
-              value={tone}
-              onChange={(e) => setTone(e.target.value as Tone)}
+              value={settings.tone}
+              onChange={(e) => setSettings({...settings,tone:e.target.value as Tone})}
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Tone"
             >
