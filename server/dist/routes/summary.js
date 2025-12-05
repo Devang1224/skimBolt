@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const base_64_1 = __importDefault(require("base-64"));
 const redis_1 = __importDefault(require("../lib/redis"));
 const db_1 = __importDefault(require("../lib/db"));
-const geminiApi_1 = require("../lib/geminiApi");
+const generateSummary_1 = require("../helpers/generateSummary");
 const router = express_1.default.Router();
 router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,7 +29,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
             return null;
         // TODO: generate summary and store it in the redis
         // TODO: do chunking if the text size is greater than 100kb 
-        const modelOutput = yield (0, geminiApi_1.accessModel)(textContent);
+        const modelOutput = yield (0, generateSummary_1.generateSummary)(textContent, tone, length, language);
         if (modelOutput) {
             return res.status(200).json({
                 message: "summarized successfully",

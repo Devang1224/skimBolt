@@ -11,17 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessModel = void 0;
 const genai_1 = require("@google/genai");
-const prompt_1 = require("../prompt");
 // https://ai.google.dev/gemini-api/docs/text-generation?authuser=2
 const ai = new genai_1.GoogleGenAI({});
-function accessModel(content) {
+function accessModel(content, config) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: content,
-            config: {
-                systemInstruction: prompt_1.GET_SUMMARY
-            }
+            config: config
         });
         return response;
     });
