@@ -2,6 +2,7 @@ import { useState } from "react";
 import SummaryPage from "./SummaryPage";
 import { fetchSummary } from "../../services/fetchSummary";
 import type { GlossaryItem } from "../../types";
+import Header from "../../components/Header";
 
 interface ChatMainTypes {
   authToken: string;
@@ -28,7 +29,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
           resolve(response);
         }
        );
-      })
+     });
    }
 
   const getSummary = async () => {
@@ -69,6 +70,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   console.log("authToken from chatMain: ", authToken);
   return (
     <div>
+      <Header/>
       {isSummaryActive ? (
         <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       ) : (

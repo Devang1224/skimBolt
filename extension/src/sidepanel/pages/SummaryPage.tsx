@@ -1,16 +1,9 @@
 'use client';
 
 import React, { useRef, useState } from 'react'
-import { 
-  IoSettingsOutline, 
-} from "react-icons/io5";
-import { 
 
-  MdOutlineHistory,
-} from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import Glossary from '../../components/Glossary';
-import Settings from '../../components/Settings';
 import MenuBar from '../../components/MenuBar';
 // import FactCheck from '../../components/FactCheck';
 // import Insights from '../../components/Insights';
@@ -29,7 +22,6 @@ const SummaryPage = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [activeTab, setActiveTab] = useState('summary');
   
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true);
 
   const handleInput = () => {
     const el = textareaRef.current;
@@ -58,24 +50,6 @@ const SummaryPage = ({
 
     <div className=" mx-auto bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col overflow-hidden relative">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 px-3 py-1">
-        <div className="flex items-center justify-end">
-          <div className="flex items-center space-x-1">
-            <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer">
-              <MdOutlineHistory className="text-blue-600 group-hover:text-blue-700" size={18} />
-            </button>
-            <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer" onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
-              <IoSettingsOutline className="text-blue-600 group-hover:text-blue-700" size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
-
-     
-
-
-      <Settings isSettingsOpen={isSettingsOpen}/>
-
 
       <div className="flex-1 flex flex-col min-h-0">
         
@@ -86,7 +60,6 @@ const SummaryPage = ({
             setActiveTab={setActiveTab}
             activeTab={activeTab}
            /> 
-
 
             {activeTab === 'summary' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 
