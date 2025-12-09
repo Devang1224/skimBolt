@@ -37,7 +37,7 @@ const Settings = ({
   return (
     <div className={`${isSettingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'} transition-all duration-300 absolute top-12 left-0 right-0 z-10`}>
     {/* Control Panel */}
-    <div className="mx-2 rounded-xl border border-slate-200 bg-white/80 backdrop-blur p-3 shadow-lg">
+    <div className="mx-2 rounded-xl border border-slate-200 bg-white backdrop-blur p-3 shadow-lg">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 text-slate-700">
           <IoSettingsOutline size={16} className="text-blue-600" />

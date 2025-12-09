@@ -3,6 +3,7 @@ import SummaryPage from "./SummaryPage";
 import { fetchSummary } from "../../services/fetchSummary";
 import type { GlossaryItem } from "../../types";
 import Header from "../../components/Header";
+import { useSettings } from "../../context/SettingsContext";
 
 interface ChatMainTypes {
   authToken: string;
@@ -16,6 +17,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   const [isSummaryActive, setIsSummaryActive] = useState(false);
   const [blogSummary,setBlogSummary] = useState("");
   const [blogGlossary,setBlogGlossary] = useState<GlossaryItem[]>([]);
+  const {settings} = useSettings();
 
 
 
@@ -41,7 +43,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       if (!tab?.id) {
         throw new Error("Active tab not found");
       }
-  
+
       if (!tab.url) {
         throw new Error("Tab URL not found");
       }
@@ -49,9 +51,8 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       if (!textContent?.article) {
         throw new Error("Content script returned empty article");
       }
-
-
-      const data = await fetchSummary(textContent.article, tab.url);
+      
+      const data = await fetchSummary(textContent.article, tab.url,settings);
       if (!data?.summary) {
         throw new Error("API response missing summary field");
       }
@@ -69,17 +70,17 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
 
   console.log("authToken from chatMain: ", authToken);
   return (
-    <div>
+    <div className="h-[calc(100vh-43px)]">
       <Header/>
       {isSummaryActive ? (
         <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       ) : (
-        <div className="flex flex-col h-full p-2">
-          <h1 className="text-2xl font-bold mb-4">SkimBolt</h1>
-          <div className="flex-1 flex items-center justify-center">
+        <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
+          <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
+          <div className="">
             <button 
               onClick={getSummary} 
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors 
+              className="px-6 py-3 bg-blue-600  rounded-lg hover:bg-blue-700 transition-colors 
               cursor-pointer font-medium"
             >
               Get Summary

@@ -1,17 +1,18 @@
 import { safeJsonParse } from "../helpers/helpers";
 import { userApi } from "../middleware";
-import type { SummaryResponse } from "../types";
-
+import type { Settings, SummaryResponse } from "../types";
+ 
   
 
 
 
 export const fetchSummary = async(
     textContent:string,
-    url:string
+    url:string,
+    settings:Settings
   ):Promise<SummaryResponse>=>{
     try{
-        const response = await userApi.post("/summary/generate-summary",{textContent,url});
+        const response = await userApi.post("/summary/generate-summary",{textContent,url,settings});
         console.log("response from summary api: ",response);
         const aiText = response?.data?.aiResp?.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!aiText) {

@@ -13,7 +13,7 @@ const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(true);
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 px-3 py-1">
+    <div className="bg-white backdrop-blur-sm border-b border-slate-200 px-3 py-1">
       <div className="flex items-center justify-end">
         <div className="flex items-center space-x-1">
           <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer">
@@ -31,4 +31,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;

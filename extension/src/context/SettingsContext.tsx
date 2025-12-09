@@ -17,7 +17,7 @@ export const SettingsProvider = ({children}:{children: ReactNode}) => {
     tone:"neutral",
     length:"medium"
  })
-
+ console.log("SETTINGS: ",settings);
   return (
     <SettingsContext.Provider value={{settings,setSettings}}>
       {children}
