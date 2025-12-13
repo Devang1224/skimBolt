@@ -14,6 +14,7 @@ export const generateSummary = async(
 
     try{
         const config = { systemInstruction: GET_SUMMARY(tone,length,language) };
+
         const summary = await accessModel(content,config);
           if (!summary) {
             throw new Error("Model returned an empty summary.");

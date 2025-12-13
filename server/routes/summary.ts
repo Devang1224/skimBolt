@@ -10,14 +10,12 @@ const router = express.Router();
 router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
     try{
-        
+
         const {
-            length,
-            language,
-            tone,
             textContent,
             url
         } = req.body;
+        const {tone,language,length} = req.body?.settings;
         const user = req.user;
 
 
@@ -29,6 +27,8 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
      
       // TODO: generate summary and store it in the redis
       // TODO: do chunking if the text size is greater than 100kb 
+      console.log("CONFIG____________",length,tone,language);
+
       const modelOutput = await generateSummary(textContent,tone,length,language);
         if(modelOutput){
             return res.status(200).json({

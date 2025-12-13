@@ -18,6 +18,7 @@ const generateSummary = (content, tone, language, length) => __awaiter(void 0, v
     }
     try {
         const config = { systemInstruction: (0, prompt_1.GET_SUMMARY)(tone, length, language) };
+        console.log("PROMPT____________", config);
         const summary = yield (0, geminiApi_1.accessModel)(content, config);
         if (!summary) {
             throw new Error("Model returned an empty summary.");

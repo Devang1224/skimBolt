@@ -19,8 +19,10 @@ const db_1 = __importDefault(require("../lib/db"));
 const generateSummary_1 = require("../helpers/generateSummary");
 const router = express_1.default.Router();
 router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { length, language, tone, textContent, url } = req.body;
+        const { textContent, url } = req.body;
+        const { tone, language, length } = (_a = req.body) === null || _a === void 0 ? void 0 : _a.settings;
         const user = req.user;
         const hashedUrl = base_64_1.default.encode(url);
         //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
@@ -29,6 +31,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
             return null;
         // TODO: generate summary and store it in the redis
         // TODO: do chunking if the text size is greater than 100kb 
+        console.log("CONFIG____________", length, tone, language);
         const modelOutput = yield (0, generateSummary_1.generateSummary)(textContent, tone, length, language);
         if (modelOutput) {
             return res.status(200).json({
