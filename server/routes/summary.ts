@@ -7,6 +7,53 @@ import { generateSummary } from "../helpers/generateSummary";
 
 const router = express.Router();
 
+
+router.post("/check-summary",async(req:Request,res:Response):Promise<any>=>{
+    try{
+     const {url} = req.body;
+     const userId = req.user.id;
+     if(!url){
+        return res.status(400).json({
+            message:"url not supplied",
+            success:false
+        })
+     }
+
+     const hashedUrl = base64.encode(url);
+
+     const isSummaryExists = await prisma.summary.findFirst({
+        where:{
+            urlHash:hashedUrl,
+            userId:userId
+        }
+     });
+    
+     if(!isSummaryExists){
+        return res.status(404).json({
+            message:"Summary not found",
+            found:false,
+            success:false,
+        });
+     }
+
+     const cachedSummary = isSummaryExists?.summary;
+     return res.status(200).json({
+        summary:cachedSummary,
+        message:"summary found",
+        found:true,
+        success:true,
+     })
+
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong",
+        })
+    }
+})
+
+
+
 router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
     try{
@@ -25,25 +72,18 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
       const redis = await getRedisClient();
       if(!redis)return null;
      
-      // TODO: generate summary and store it in the redis
-      // TODO: do chunking if the text size is greater than 100kb 
       console.log("CONFIG____________",length,tone,language);
 
-      const modelOutput = await generateSummary(textContent,tone,length,language);
-        if(modelOutput){
-            return res.status(200).json({
-                message:"summarized successfully",
-                sucesss:true,
-                aiResp:modelOutput,
-            })
-        }
+      const modelOutput = await generateSummary(textContent,tone,length,language) as any;
+      console.log("MODELOUTPUT______: ",modelOutput?.candidates?.[0]?.content?.parts?.[0]?.text);
 
-      const summary = " " ;
+      const summary  = modelOutput?.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+
        if(!summary){
         return res.status(500).json({
             message:"Summary cannot be created",
             success:false,
-            aiResp:modelOutput,
         })
        }
     const response = await prisma.summary.upsert({
@@ -70,7 +110,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
     return res.status(200).json({
         message:"Generated summary successfully",
-        aiResp:summary,
+        aiResp:modelOutput,
         success:true
     });
         
