@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SummaryPage from "./SummaryPage";
 import { fetchSummary } from "../../services/fetchSummary";
-import type { GlossaryItem } from "../../types";
+import type { GlossaryItem, SummaryResponse } from "../../types";
 import Header from "../../components/Header";
 import { useSettings } from "../../context/SettingsContext";
+import { userApi } from "../../middleware";
+import { safeJsonParse } from "../../helpers/helpers";
 
 interface ChatMainTypes {
   authToken: string;
@@ -17,8 +19,38 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   const [isSummaryActive, setIsSummaryActive] = useState(false);
   const [blogSummary,setBlogSummary] = useState("");
   const [blogGlossary,setBlogGlossary] = useState<GlossaryItem[]>([]);
+  const [isLoading,setIsLoading] = useState(false);
   const {settings} = useSettings();
 
+
+
+const fetchCachedSummary = async()=>{
+  try{
+    setIsLoading(true);
+     const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+      const response =  await userApi.post('/summary/check-summary',{url:tab.url});
+      const cachedSummary  = safeJsonParse<SummaryResponse>(response.data.summary);
+      setBlogSummary(cachedSummary.summary);
+      if(cachedSummary?.glossary?.length){
+        setBlogGlossary([...cachedSummary.glossary]);
+      }
+      setIsSummaryActive(true);
+      
+    console.log("checking cachedsummary:", cachedSummary);
+
+  }catch(err){
+    console.log(err);
+  }finally{
+    setIsLoading(false);
+  }
+}
+
+useEffect(()=>{
+  fetchCachedSummary();
+},[])
 
 
   const getTextContent = (tabId: number) => {
@@ -51,7 +83,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       if (!textContent?.article) {
         throw new Error("Content script returned empty article");
       }
-      
+      setIsLoading(true)
       const data = await fetchSummary(textContent.article, tab.url,settings);
       if (!data?.summary) {
         throw new Error("API response missing summary field");
@@ -65,6 +97,8 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
 
     }catch(err){
       console.log("error while fetching summary: ",err);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -75,6 +109,9 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       {isSummaryActive ? (
         <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       ) : (
+          isLoading ? (
+            <p>Loading.....</p>
+          ) :(
         <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
           <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
           <div className="">
@@ -86,7 +123,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
               Get Summary
             </button>
           </div>
-        </div>
+        </div> )
       )}
     </div>
   );
