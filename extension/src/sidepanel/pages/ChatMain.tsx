@@ -105,13 +105,13 @@ useEffect(()=>{
   console.log("authToken from chatMain: ", authToken);
   return (
     <div className="h-[calc(100vh-43px)]">
-      <Header/>
+      <Header blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       {isSummaryActive ? (
         <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary}/>
       ) : (
           isLoading ? (
             <p>Loading.....</p>
-          ) :(
+          ):(
         <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
           <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
           <div className="">
