@@ -1,4 +1,3 @@
-import { accessModel } from "../lib/geminiApi";
 import { GET_SUMMARY } from "../prompt";
 import { SUMMARY_LENGTH, TONE } from "../types";
 
@@ -13,13 +12,13 @@ export const generateSummary = async(
       }
 
     try{
-        const config = { systemInstruction: GET_SUMMARY(tone,length,language) };
+        // const config = { systemInstruction: GET_SUMMARY(tone,length,language) };
 
-        const summary = await accessModel(content,config);
-          if (!summary) {
-            throw new Error("Model returned an empty summary.");
-          }
-         return summary;
+        // const summary = await accessModel(content,config);
+        //   if (!summary) {
+        //     throw new Error("Model returned an empty summary.");
+        //   }
+        //  return summary;
     
     }catch(err){
         console.error("Error generating summary: ",err);

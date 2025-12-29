@@ -47,7 +47,7 @@ app.use("/api/v1/extension-token", sendExtensionToken);
 
 // app.use("/api/v1/summary",summaryRouter);
 app.use("/api/v1/auth",authenticateUser,authRouter);
-app.use("/api/v1/summary",authenticateUser,summaryRouter);
+app.use("/api/v1/summary",summaryRouter);
 
 
 

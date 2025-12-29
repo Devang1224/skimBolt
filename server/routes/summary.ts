@@ -3,6 +3,7 @@ import base64 from "base-64";
 import getRedisClient from "../lib/redis";
 import prisma from "../lib/db";
 import { generateSummary } from "../helpers/generateSummary";
+import { chunkContent } from "../helpers/chunkContent";
 
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.post("/check-summary",async(req:Request,res:Response):Promise<any>=>{
         return res.status(400).json({
             message:"url not supplied",
             success:false
-        })
+        });
      }
 
      const hashedUrl = base64.encode(url);
@@ -52,6 +53,17 @@ router.post("/check-summary",async(req:Request,res:Response):Promise<any>=>{
     }
 })
 
+router.post("/save-summary",async(req:Request,res:Response):Promise<any>=>{
+  try{
+    
+  }catch(err){
+    return res.status(500).json({
+        success:false,
+        message:"Something went wrong",
+    })
+  }
+})
+
 
 
 router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
@@ -69,10 +81,16 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
       const hashedUrl = base64.encode(url);
     //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
     
-      const redis = await getRedisClient();
-      if(!redis)return null;
+    //   const redis = await getRedisClient();
+    //   if(!redis)return null;
      
-      console.log("CONFIG____________",length,tone,language);
+    //   console.log("CONFIG____________",length,tone,language);
+
+      const chunks = await chunkContent(textContent);
+         
+      return res.status(200).json({
+        data:chunks
+      });
 
       const modelOutput = await generateSummary(textContent,tone,length,language) as any;
       console.log("MODELOUTPUT______: ",modelOutput?.candidates?.[0]?.content?.parts?.[0]?.text);
