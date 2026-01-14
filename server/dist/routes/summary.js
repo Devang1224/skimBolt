@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const base_64_1 = __importDefault(require("base-64"));
 const db_1 = __importDefault(require("../lib/db"));
 const generateSummary_1 = require("../helpers/generateSummary");
-const chunkContent_1 = require("../helpers/chunkContent");
+const chunkAndSaveContent_1 = require("../helpers/chunkAndSaveContent");
 const router = express_1.default.Router();
 router.post("/check-summary", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -78,7 +78,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         //   const redis = await getRedisClient();
         //   if(!redis)return null;
         //   console.log("CONFIG____________",length,tone,language);
-        const chunks = yield (0, chunkContent_1.chunkContent)(textContent);
+        const chunks = yield (0, chunkAndSaveContent_1.chunkAndSaveContent)(textContent, hashedUrl);
         return res.status(200).json({
             data: chunks
         });

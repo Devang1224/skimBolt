@@ -32,7 +32,7 @@ function summarizeChunk(text) {
                 content: text
             }
         ]);
-        return res;
+        return res.content;
     });
 }
 function chunkContent(content) {
@@ -41,9 +41,12 @@ function chunkContent(content) {
             const splitter = new textsplitters_1.RecursiveCharacterTextSplitter({ chunkSize: 3000, chunkOverlap: 200 });
             const chunks = yield splitter.splitText(content);
             const summarizedChunks = yield Promise.all(chunks.map((item) => summarizeChunk(item)));
-            const summaries = summarizedChunks.map((item) => item.content);
-            console.log("splitted text: ", summaries);
-            return summaries;
+            const embeddings = yield geminiApi_1.embedd.embedDocuments(summarizedChunks);
+            console.log("embeddings: ", embeddings);
+            console.log("summarizedChunks: ", summarizedChunks);
+            console.log("summarized chunks length ", summarizedChunks.length);
+            console.log("embeddings length: ", embeddings.length);
+            return summarizedChunks;
             // const summaryDocs = summarizedChunks.map((item)=>new Document({pageContent:item}))
         }
         catch (err) {

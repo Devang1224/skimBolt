@@ -3,7 +3,7 @@ import base64 from "base-64";
 import getRedisClient from "../lib/redis";
 import prisma from "../lib/db";
 import { generateSummary } from "../helpers/generateSummary";
-import { chunkContent } from "../helpers/chunkContent";
+import { chunkAndSaveContent } from "../helpers/chunkAndSaveContent";
 
 
 const router = express.Router();
@@ -86,7 +86,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
      
     //   console.log("CONFIG____________",length,tone,language);
 
-      const chunks = await chunkContent(textContent);
+      const chunks = await chunkAndSaveContent(textContent,hashedUrl);
          
       return res.status(200).json({
         data:chunks
