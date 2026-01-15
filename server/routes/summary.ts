@@ -4,6 +4,7 @@ import getRedisClient from "../lib/redis";
 import prisma from "../lib/db";
 import { generateSummary } from "../helpers/generateSummary";
 import { chunkAndSaveContent } from "../helpers/chunkAndSaveContent";
+import { UserSettings } from "../types";
 
 
 const router = express.Router();
@@ -74,7 +75,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             textContent,
             url
         } = req.body;
-        const {tone,language,length} = req.body?.settings;
+        const userSettings:UserSettings = req.body?.settings;
         const user = req.user;
 
 
@@ -86,7 +87,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
      
     //   console.log("CONFIG____________",length,tone,language);
 
-      const chunks = await chunkAndSaveContent(textContent,hashedUrl);
+      const chunks = await chunkAndSaveContent(textContent,hashedUrl,userSettings);
          
       return res.status(200).json({
         data:chunks

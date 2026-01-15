@@ -1,7 +1,8 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embedd, llm } from "../lib/geminiApi";
-import { BASE_PROMPT } from "../prompt";
+import { BASE_PROMPT, masterSummaryPrompt } from "../prompt";
 import prisma from "../lib/db";
+import { UserSettings } from "../types";
 
 
 const MAX_CONTENT_LENGTH = 1_000_000; // ~1MB of text
@@ -24,7 +25,6 @@ export interface ChunkAndSaveResult {
 }
 
 
-// Retry utility with exponential backoff
 // async function retryWithBackoff<T>(
 //   fn: () => Promise<T>,
 //   maxRetries: number = MAX_RETRIES,
@@ -60,25 +60,48 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, operation: strin
   ]);
 }
 
-async function generateMasterSummary(chunks:string[]){
+async function generateMasterSummary(summarizedChunks:string[],userSettings:UserSettings){
     try{
+       const summarizedChunksString = summarizedChunks?.join(" ");
         const res = await withTimeout(
-            llm.invoke([
-                {
-                    role:'system',
-                    content:''
-                },{
-                    role:'user',
-                    content:''
-                }
-            ]),
-            LLM_TIMEOUT_MS,
-            "LLM generate master summary"
+          llm.invoke([
+            {
+              role: "system",
+              content: `${masterSummaryPrompt}
+                      ====================================================
+                        USER-CONTROLLED SETTINGS (DO NOT IGNORE)
+                        ====================================================
+                        USER PREFERENCES:
+                        - Tone: ${userSettings.tone}
+                        - Language: ${userSettings.language}
+                        - Length: ${userSettings.length}
+                        
+                        RULES:
+                        - You MUST respect these settings.
+                        - If "language" is provided, the ENTIRE summary, glossary, and metadata must be in that language.
+                        - If "tone" is provided, adjust writing style but DO NOT change factual meaning.
+                        - If "length" is provided:
+                            • "short" → 3–4 key points total
+                            • "medium" → 5–8 key points
+                            • "detailed" → 8–12 key points + fuller paragraphs
+                        - If any setting is missing, fall back to defaults: 
+                      
+                        tone = "neutral", language = "English", length = "medium".
+              `,
+            },
+            {
+              role: "user",
+              content: summarizedChunksString,
+            },
+          ]),
+          LLM_TIMEOUT_MS,
+          "LLM generate master summary"
         );
          console.log("MASTER SUMMARY________",res);
 
     }catch(err){
         console.log("Error while generating master summary",err);
+        throw err;
     }
 }
 
@@ -176,7 +199,8 @@ async function batchInsertChunks(
 // Main function
 export async function chunkAndSaveContent(
   content: string,
-  hashedUrl: string
+  hashedUrl: string,
+  userSettings:UserSettings
 ): Promise<ChunkAndSaveResult> {
   const startTime = Date.now();
   const correlationId = `${hashedUrl.substring(0, 8)}-${Date.now()}`;
