@@ -68,29 +68,27 @@ router.post("/save-summary", (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 }));
 router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a;
     try {
         const { textContent, url } = req.body;
-        const { tone, language, length } = (_a = req.body) === null || _a === void 0 ? void 0 : _a.settings;
+        const userSettings = (_a = req.body) === null || _a === void 0 ? void 0 : _a.settings;
         const user = req.user;
         const hashedUrl = base_64_1.default.encode(url);
         //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
         //   const redis = await getRedisClient();
         //   if(!redis)return null;
         //   console.log("CONFIG____________",length,tone,language);
-        const chunks = yield (0, chunkAndSaveContent_1.chunkAndSaveContent)(textContent, hashedUrl);
-        return res.status(200).json({
-            data: chunks
-        });
-        const modelOutput = yield (0, generateSummary_1.generateSummary)(textContent, tone, length, language);
-        console.log("MODELOUTPUT______: ", (_f = (_e = (_d = (_c = (_b = modelOutput === null || modelOutput === void 0 ? void 0 : modelOutput.candidates) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.content) === null || _d === void 0 ? void 0 : _d.parts) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.text);
-        const summary = (_l = (_k = (_j = (_h = (_g = modelOutput === null || modelOutput === void 0 ? void 0 : modelOutput.candidates) === null || _g === void 0 ? void 0 : _g[0]) === null || _h === void 0 ? void 0 : _h.content) === null || _j === void 0 ? void 0 : _j.parts) === null || _k === void 0 ? void 0 : _k[0]) === null || _l === void 0 ? void 0 : _l.text;
-        if (!summary) {
+        const { summarizedChunks } = yield (0, chunkAndSaveContent_1.chunkAndSaveContent)(textContent, hashedUrl);
+        const masterSummary = yield (0, generateSummary_1.generateMasterSummary)(summarizedChunks, userSettings);
+        console.log("MASTER SUMMARY________", masterSummary);
+        console.log("USERID________: ", user === null || user === void 0 ? void 0 : user.id);
+        if (!masterSummary.content) {
             return res.status(500).json({
                 message: "Summary cannot be created",
                 success: false,
             });
         }
+        console.log("USERID: ", user === null || user === void 0 ? void 0 : user.id);
         const response = yield db_1.default.summary.upsert({
             where: {
                 userId_urlHash: {
@@ -99,13 +97,13 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
                 },
             },
             update: {
-                summary: summary,
+                summary: masterSummary.content,
                 url: url
             },
             create: {
                 urlHash: hashedUrl,
                 url: url,
-                summary: summary,
+                summary: masterSummary.content,
                 userId: user.id,
             }
         });
@@ -114,7 +112,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         //  });  
         return res.status(200).json({
             message: "Generated summary successfully",
-            aiResp: modelOutput,
+            aiResp: masterSummary,
             success: true
         });
     }
@@ -123,6 +121,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).json({
             success: false,
             message: "Something went wrong",
+            error: err
         });
     }
 }));

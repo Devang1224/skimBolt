@@ -17,6 +17,7 @@ const textsplitters_1 = require("@langchain/textsplitters");
 const geminiApi_1 = require("../lib/geminiApi");
 const prompt_1 = require("../prompt");
 const db_1 = __importDefault(require("../lib/db"));
+const withTimeout_1 = require("./withTimeout");
 const MAX_CONTENT_LENGTH = 1000000; // ~1MB of text
 const MAX_CHUNKS = 500; // preventing excessive API calls
 const CHUNK_SIZE = 3000;
@@ -26,7 +27,6 @@ const LLM_TIMEOUT_MS = 30000; // 30 seconds per llm call
 const EMBEDDING_TIMEOUT_MS = 60000; // 60 seconds for embedding generation
 const MAX_RETRIES = 3;
 const RETRY_DELAY_BASE_MS = 1000; // base delay for exponential backoff
-// Retry utility with exponential backoff
 // async function retryWithBackoff<T>(
 //   fn: () => Promise<T>,
 //   maxRetries: number = MAX_RETRIES,
@@ -49,12 +49,6 @@ const RETRY_DELAY_BASE_MS = 1000; // base delay for exponential backoff
 //   }
 //   throw lastError || new Error("Retry failed");
 // }
-function withTimeout(promise, timeoutMs, operation) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)), timeoutMs)),
-    ]);
-}
 // summarizing a single chunk with timeout
 function summarizeChunk(text, chunkIndex, totalChunks) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -62,7 +56,7 @@ function summarizeChunk(text, chunkIndex, totalChunks) {
             throw new Error("Empty chunk text provided");
         }
         const summarizeFn = () => __awaiter(this, void 0, void 0, function* () {
-            const res = yield withTimeout(geminiApi_1.llm.invoke([
+            const res = yield (0, withTimeout_1.withTimeout)(geminiApi_1.llm.invoke([
                 {
                     role: "system",
                     content: `${prompt_1.BASE_PROMPT}
@@ -212,7 +206,7 @@ function chunkAndSaveContent(content, hashedUrl) {
                 chunksToEmbed: successfulChunks.length,
             });
             const embeddingStartTime = Date.now();
-            const embeddings = yield withTimeout(geminiApi_1.embedd.embedDocuments(successfulChunks), EMBEDDING_TIMEOUT_MS, "Embedding generation");
+            const embeddings = yield (0, withTimeout_1.withTimeout)(geminiApi_1.embedd.embedDocuments(successfulChunks), EMBEDDING_TIMEOUT_MS, "Embedding generation");
             const embeddingDuration = Date.now() - embeddingStartTime;
             if (embeddings.length !== successfulChunks.length) {
                 throw new Error(`Embedding count mismatch: expected ${successfulChunks.length}, got ${embeddings.length}`);
@@ -230,6 +224,7 @@ function chunkAndSaveContent(content, hashedUrl) {
                 batches: Math.ceil(successfulChunks.length / DB_BATCH_SIZE),
             });
             const dbStartTime = Date.now();
+            yield db_1.default.$executeRaw ` DELETE FROM blog_summary_chunks WHERE source_url=${hashedUrl}`; // deleting previous chunks before inserting
             yield batchInsertChunks(urlArray, successfulChunks, embeddings, DB_BATCH_SIZE);
             const dbDuration = Date.now() - dbStartTime;
             const totalDuration = Date.now() - startTime;
@@ -248,6 +243,7 @@ function chunkAndSaveContent(content, hashedUrl) {
                 chunksProcessed: successfulChunks.length,
                 chunksFailed: failedChunks,
                 totalChunks: chunks.length,
+                summarizedChunks: successfulChunks
             };
         }
         catch (error) {
@@ -264,6 +260,7 @@ function chunkAndSaveContent(content, hashedUrl) {
                 chunksFailed: 0,
                 totalChunks: 0,
                 error: errorMessage,
+                summarizedChunks: []
             };
         }
     });

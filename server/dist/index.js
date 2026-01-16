@@ -25,7 +25,7 @@ app.use((0, cookie_parser_1.default)());
 app.use("/api/v1/extension-token", sendTokenToExtension_1.sendExtensionToken);
 // app.use("/api/v1/summary",summaryRouter);
 app.use("/api/v1/auth", authenticate_1.authenticateUser, auth_1.default);
-app.use("/api/v1/summary", summary_1.default);
+app.use("/api/v1/summary", authenticate_1.authenticateUser, summary_1.default);
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server is running on port", process.env.PORT);
 });

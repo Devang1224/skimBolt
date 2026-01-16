@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import base64 from "base-64";
 import getRedisClient from "../lib/redis";
 import prisma from "../lib/db";
-import { generateSummary } from "../helpers/generateSummary";
+import { generateMasterSummary } from "../helpers/generateSummary";
 import { chunkAndSaveContent } from "../helpers/chunkAndSaveContent";
 import { UserSettings } from "../types";
 
@@ -87,24 +87,20 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
      
     //   console.log("CONFIG____________",length,tone,language);
 
-      const chunks = await chunkAndSaveContent(textContent,hashedUrl,userSettings);
-         
-      return res.status(200).json({
-        data:chunks
-      });
-
-      const modelOutput = await generateSummary(textContent,tone,length,language) as any;
-      console.log("MODELOUTPUT______: ",modelOutput?.candidates?.[0]?.content?.parts?.[0]?.text);
-
-      const summary  = modelOutput?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const { summarizedChunks } = await chunkAndSaveContent(textContent,hashedUrl);
+      const masterSummary = await generateMasterSummary(summarizedChunks,userSettings);
     
+    console.log("MASTER SUMMARY________", masterSummary);
+    console.log("USERID________: ", user?.id);
 
-       if(!summary){
+       if(!masterSummary.content){
         return res.status(500).json({
             message:"Summary cannot be created",
             success:false,
         })
        }
+
+    console.log("USERID: ", user?.id);
     const response = await prisma.summary.upsert({
         where:{
             userId_urlHash:{
@@ -113,13 +109,13 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             },
         },
         update:{
-            summary:summary,
+            summary:masterSummary.content as string,
             url:url
         },
         create: {
             urlHash:hashedUrl,
             url:url,
-            summary:summary,
+            summary:masterSummary.content as string,
             userId:user.id,
         }
     })
@@ -129,7 +125,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
     return res.status(200).json({
         message:"Generated summary successfully",
-        aiResp:modelOutput,
+        aiResp:masterSummary,
         success:true
     });
         
@@ -138,6 +134,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
        return res.status(500).json({
             success:false,
             message:"Something went wrong",
+            error:err
         })
     }
 })

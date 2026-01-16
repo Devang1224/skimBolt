@@ -1,27 +1,50 @@
-import { GET_SUMMARY } from "../prompt";
-import { SUMMARY_LENGTH, TONE } from "../types";
+import { llm } from "../lib/geminiApi";
+import { GET_SUMMARY, masterSummaryPrompt } from "../prompt";
+import { SUMMARY_LENGTH, TONE, UserSettings } from "../types";
+import { withTimeout } from "./withTimeout";
 
-export const generateSummary = async(
-    content:string,
-    tone:TONE,
-    language:string,
-    length:SUMMARY_LENGTH
-)=>{
-     if (!content || content.trim().length < 50) {
-        throw new Error("Content is too short to summarize.");
-      }
-
+export async function generateMasterSummary(summarizedChunks:string[],userSettings:UserSettings){
     try{
-        // const config = { systemInstruction: GET_SUMMARY(tone,length,language) };
+       const summarizedChunksString = summarizedChunks?.join(" ");
+        const res = await withTimeout(
+          llm.invoke([
+            {
+              role: "system",
+              content: `${masterSummaryPrompt}
+                      ====================================================
+                        USER-CONTROLLED SETTINGS (DO NOT IGNORE)
+                        ====================================================
+                        USER PREFERENCES:
+                        - Tone: ${userSettings.tone}
+                        - Language: ${userSettings.language}
+                        - Length: ${userSettings.length}
+                        
+                        RULES:
+                        - You MUST respect these settings.
+                        - If "language" is provided, the ENTIRE summary, glossary, and metadata must be in that language.
+                        - If "tone" is provided, adjust writing style but DO NOT change factual meaning.
+                        - If "length" is provided:
+                            • "short" → 3–4 key points total
+                            • "medium" → 5–8 key points
+                            • "detailed" → 8–12 key points + fuller paragraphs
+                        - If any setting is missing, fall back to defaults: 
+                      
+                        tone = "neutral", language = "English", length = "medium".
+              `,
+            },
+            {
+              role: "user",
+              content: summarizedChunksString,
+            },
+          ]),
+          30_000,
+          "LLM generate master summary"
+        );
+       
+        return res;
 
-        // const summary = await accessModel(content,config);
-        //   if (!summary) {
-        //     throw new Error("Model returned an empty summary.");
-        //   }
-        //  return summary;
-    
     }catch(err){
-        console.error("Error generating summary: ",err);
-        throw new Error("Summary generation failed. Please try again.");
+        console.log("Error while generating master summary",err);
+        throw err;
     }
 }
