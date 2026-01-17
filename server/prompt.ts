@@ -302,13 +302,14 @@ ${BASE_PROMPT}
        glossary:[{
          term:'',
          meaning:''
-        }]
+        }],
+       metadata:{}
      }
    separate objects should be there for summary and glossary (in json).
     - "summary" MUST be a single string containing valid HTML.
     - Overview, Key Points, and Takeaways MUST be HTML sections inside the summary string.
     - Do NOT create nested objects for Overview, Key Points, or Takeaways.
-    - dont wrap the json in tripple backticks use a single backtick.
+    - dont wrap the json in tripple backticks, use a single backtick.
      ----------------------------------------------------
    1) Overview
     ----------------------------------------------------
@@ -316,7 +317,29 @@ ${BASE_PROMPT}
     - Follow with ONE short paragraph explaining the article.
     - Do NOT wrap any headings (h1/h2/h3) in <mark>.
     - Do NOT mark section labels like “Overview”, “Key Points”, “Takeaways”.
+
+    ----------------------------------------------------
+    VISUAL & READABILITY RULES:
+    ----------------------------------------------------
+    - The HTML must be clean, modern, and highly readable.
+    - Use natural visual spacing by separating sections clearly.
+    - Avoid dense or wall-like text.
+    - Bullet points must be scannable and skimmable.
     
+    TYPOGRAPHY & STYLE GUIDELINES:
+    - Write in a modern, editorial blog style (similar to Medium or Notion).
+    - Headings should feel informative and confident, not generic.
+    - Use a friendly, professional tone — not academic.
+    - Emphasize clarity over verbosity.
+    - Avoid jargon unless the article explicitly explains it.
+    
+    HIGHLIGHTING RULES:
+    - Use <mark> sparingly and intentionally.
+    - Highlights should guide the reader’s eye to the most important insight.
+    - Never highlight headings, UI labels, or trivial phrases.
+    
+    FORMATTING CONSTRAINTS:
+    - Do NOT include inline styles, CSS, or class names.
     ----------------------------------------------------
     2) Key Points
     ----------------------------------------------------
