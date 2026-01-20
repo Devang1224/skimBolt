@@ -14,15 +14,19 @@ export const fetchSummary = async(
     try{
         const response = await userApi.post("/summary/generate-summary",{textContent,url,settings});
         console.log("response from summary api: ",response);
-        const aiText = response?.data?.aiResp?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        const aiText = response?.data?.aiResp;
+         console.log("AI MODEL RESPONSE _____________: ",aiText);
+
         if (!aiText) {
             console.error("Bad AI response structure:", response.data);
             throw new Error("Invalid AI response structure.");
           }
           const parsed = safeJsonParse<SummaryResponse>(aiText);
-          if (!parsed.summary || !parsed.glossary || !parsed.metadata) {
+          if (!parsed.summary || !parsed.glossary) {
             throw new Error("AI summary JSON missing required fields.");
           }
+          console.log("PARSED JSON: ",parsed);
         return parsed;
     }catch(err){
         console.error("Error fetching summary:", err);

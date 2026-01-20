@@ -43,3 +43,8 @@ chrome.runtime.onMessage.addListener((msg,_sender,sendResponse)=>{
     }
 })
 
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (msg.type === "PING_CONTENT_SCRIPT") {
+    sendResponse({ injected: true });
+  }
+});

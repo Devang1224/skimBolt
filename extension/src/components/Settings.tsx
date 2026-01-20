@@ -33,7 +33,7 @@ const Settings = ({
     "expert",
     "neutral",
   ];
-
+console.log("isSettingsOpen: ",isSettingsOpen);
   return (
     <div className={`${isSettingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'} transition-all duration-300 absolute top-12 left-0 right-0 z-10`}>
     {/* Control Panel */}

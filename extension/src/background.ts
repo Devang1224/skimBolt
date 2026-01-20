@@ -22,6 +22,8 @@ chrome.action.onClicked.addListener((tab)=>{
   }
 })
 
+
+
 chrome.runtime.onMessage.addListener((message,_sender,sendResponse) => {
   console.log("listener is listening");
  if(message.action === 'fetchAuthToken'){
