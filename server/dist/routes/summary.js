@@ -176,6 +176,9 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         //       "For further assistance, the site offers a full guide to making money blogging, a more detailed version of steps via a menu, and specific tutorials on topics like adding custom logos, tracking visitors, moving WordPress sites, making websites with WordPress, social media sharing, choosing website builders, linking to other sites, changing text size/color, and making blogs private. Users can also contact the author for personalized advice or email questions if the FAQ section doesn't provide answers.",
         //     'The provided content lists common questions related to starting and managing a blog. These questions cover various aspects including what makes a blog successful, the requirements for writers to start a blog, choosing a blog topic and finding a profitable niche, naming a blog and addressing taken domain names, selecting a blogging platform (like WordPress), the costs involved, how bloggers make money, blogging frequency, and reasons why blogs might fail.'
         //   ];
+        if (summarizedChunks.length == 0) {
+            return res.status(500).json("Unable to summarize chunks");
+        }
         const masterSummary = yield (0, generateSummary_1.generateMasterSummary)(summarizedChunks, userSettings);
         console.log("MASTER SUMMARY________", masterSummary);
         console.log("USERID________: ", user === null || user === void 0 ? void 0 : user.id);

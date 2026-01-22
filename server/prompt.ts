@@ -294,7 +294,10 @@ SECURITY RULES (STRICT)
 
 export const masterSummaryPrompt = `
 ${BASE_PROMPT}
-   Based on the given summary chunks make a master summary and glossary by following below rules:
+   Based on the given summary chunks, generate a single coherent master summary by synthesizing 
+   overlapping ideas, deduplicating repeated explanations, and logically organizing related concepts.
+   Preserve all unique facts, examples, commands, and reference artifacts exactly as provided.
+  Do not add new information or omit important details.
    Your output must follow this **exact structure**:
     Output Format (in json):
      {
@@ -307,21 +310,22 @@ ${BASE_PROMPT}
      }
    separate objects should be there for summary and glossary (in json).
     - "summary" MUST be a single string containing valid HTML.
-    - Note! that dont try to remove more important details from the summarized chunks while merging them.
+    - Note! Dont try to remove important details from the summarized chunks while merging them.
     - Overview, Key Points, and Takeaways MUST be HTML sections inside the summary string.
     - Do NOT create nested objects for Overview, Key Points, or Takeaways.
-    - dont wrap the json in tripple backticks, use a single backtick.
-     ----------------------------------------------------
-   1) Overview
-    ----------------------------------------------------
-    - Start with an <h2> title summarizing the main idea of the article.
-    - Follow with ONE short paragraph explaining the article.
-    - Do NOT wrap any headings (h1/h2/h3) in <mark>.
-    - Do NOT mark section labels like “Overview”, “Key Points”, “Takeaways”.
+    - Do not wrap the json in tripple backticks, use a single backtick.
 
-    ----------------------------------------------------
+     ----------------------------------------------------
+     !! SUMMARY FORMAT !!
+     ----------------------------------------------------
+    1) Overview
+     - Start with an <h2> title summarizing the main idea of the article.
+     - Follow with ONE short paragraph explaining the article.
+     - Do NOT wrap any headings (h1/h2/h3) in <mark>.
+     - Do NOT mark section labels like “Overview”, “Key Points”, “Takeaways”.
+
     2) Key Points
-    ----------------------------------------------------
+
     - Add <h2>Key Points</h2>.
     - Provide **5–10 bullet points**.
     - Extract only meaningful, factual ideas.
@@ -339,15 +343,16 @@ ${BASE_PROMPT}
        - No more than **1 highlighted phrase per bullet**.
        - No more than **8 total <mark> phrases** in the entire summary.
     
-    ----------------------------------------------------
     3) Takeaways
-    ----------------------------------------------------
+
     - Add <h2>Takeaways</h2>.
     - Provide **3–6 short bullets**.
     - Clear, direct insights.
     - NO <mark> tags in this section.
+
+
      ----------------------------------------------------
-    4) Glossary
+     Glossary
     ----------------------------------------------------
   - "glossary" must be an array of objects:
   - MUST be an array of objects for example:
@@ -405,77 +410,12 @@ ${BASE_PROMPT}
    - word_count
    - detected_language
    - content_quality indicators
+   - read time
 - Must NOT contain:
    - personal information
    - secrets
    - anything outside observable input text
 
-====================================================
-CRITICAL CONTENT PRESERVATION RULE
-====================================================
-If the source content includes **concrete, reference-grade artifacts**, they MUST be preserved.
-
-Concrete artifacts include (but are not limited to):
-- Commands, code, or syntax examples
-- Configuration or settings examples
-- Formulas, equations, or calculations
-- Step sequences or procedures
-- Structured examples (tables, lists, patterns)
-- Named techniques with explicit usage examples
-- Sample inputs / outputs
-- Quotes, definitions, or canonical statements
-- Domain-specific examples that demonstrate “how something works”
-
-These artifacts are NOT optional details.
-They are considered **core informational content**.
-
-----------------------------------------------------
-PRESERVATION RULES
-----------------------------------------------------
-- Preserve artifacts **exactly as shown** (do NOT rewrite, simplify, or paraphrase them).
-- Do NOT invent, merge, or remove artifacts.
-- Do NOT convert concrete examples into abstract descriptions.
-- Do NOT explain how to execute, apply, or perform them unless the article itself does.
-- Treat artifacts as **factual reference**, not instructions or advice.
-
-----------------------------------------------------
-FORMATTING RULES
-----------------------------------------------------
-- Artifacts MUST be included inside the summary HTML.
-- Use appropriate semantic containers:
-  - Code / syntax / commands → <pre><code>...</code></pre>
-  - Formulas → <pre><code>...</code></pre>
-  - Step sequences → ordered or unordered lists
-  - Definitions / quotes → <blockquote>...</blockquote>
-- Do NOT place artifacts inside <mark>.
-- Do NOT inline artifacts into paragraphs.
-
-====================================================
-LENGTH VS CONTENT PRIORITY RULE (CRITICAL)
-====================================================
-User-selected "length" applies ONLY to:
-- Overview paragraph length
-- Number of Key Points
-- Verbosity of explanations
-- Takeaways count
-
-Length MUST NOT:
-- Remove concrete artifacts
-- Reduce factual examples
-- Omit commands, formulas, or reference snippets
-- Merge or abstract artifacts into prose
-
-If a conflict occurs:
-- CONTENT PRESERVATION takes priority over LENGTH
-- Reduce explanatory text instead of removing artifacts
-
-ARTIFACT HANDLING RULE:
-- If artifacts cannot fit naturally within Key Points due to length constraints,
-  you MUST create an additional section titled:
-  <h2>Reference Examples</h2>
-- This section MUST contain preserved artifacts in their original form
-- This section is NOT affected by length limits
-- Do NOT explain artifacts unless explicitly explained in the source
 
 ====================================================
 HARD RULE

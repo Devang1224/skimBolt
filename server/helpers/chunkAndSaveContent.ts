@@ -147,6 +147,18 @@ async function batchInsertChunks(
   }
 }
 
+async function getStoredChunks(url:string){
+  try{
+      const res:{content:string}[] = await prisma.$queryRaw`SELECT content FROM blog_summary_chunks WHERE source_url = ${url} `
+      console.log("SAVED CHUNKS___________: ",res);
+      const storedChunks = res?.map((item)=>item.content);
+      return storedChunks ?? [];
+  }catch(err){
+    console.log("Unable to find chunks: ",err);
+    throw new Error("Something went wrong.Unable to find chunks")
+  }
+}
+
 // Main function
 export async function chunkAndSaveContent(
   content: string,
@@ -180,6 +192,17 @@ export async function chunkAndSaveContent(
 
     if (content.trim().length === 0) {
       throw new Error("Content is empty after trimming");
+    }
+
+    const storedChunks = await getStoredChunks(hashedUrl);
+    if(storedChunks?.length > 0){
+      return {
+        success: true,
+        chunksProcessed: storedChunks?.length,
+        chunksFailed: 0,
+        totalChunks:storedChunks?.length,
+        summarizedChunks:storedChunks
+      };
     }
 
     // Split content into chunks

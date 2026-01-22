@@ -35,11 +35,11 @@ function generateMasterSummary(summarizedChunks, userSettings) {
                         - If "tone" is provided, adjust writing style but DO NOT change factual meaning.
                         - If "length" is provided:
                             • "short" → 3–4 key points total
-                            • "medium" → 5–8 key points
+                            • "medium" → 6–8 key points
                             • "detailed" → 8–12 key points + fuller paragraphs
                         - If any setting is missing, fall back to defaults: 
-                      
                         tone = "neutral", language = "English", length = "medium".
+                      
               `,
                 },
                 {

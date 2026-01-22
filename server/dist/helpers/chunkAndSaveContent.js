@@ -128,6 +128,20 @@ function batchInsertChunks(urlArray, summarizedChunks, embeddings, batchSize = D
         }
     });
 }
+function getStoredChunks(url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const res = yield db_1.default.$queryRaw `SELECT content FROM blog_summary_chunks WHERE source_url = ${url} `;
+            console.log("SAVED CHUNKS___________: ", res);
+            const storedChunks = res === null || res === void 0 ? void 0 : res.map((item) => item.content);
+            return storedChunks !== null && storedChunks !== void 0 ? storedChunks : [];
+        }
+        catch (err) {
+            console.log("Unable to find chunks: ", err);
+            throw new Error("Something went wrong.Unable to find chunks");
+        }
+    });
+}
 // Main function
 function chunkAndSaveContent(content, hashedUrl) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -154,6 +168,16 @@ function chunkAndSaveContent(content, hashedUrl) {
             }
             if (content.trim().length === 0) {
                 throw new Error("Content is empty after trimming");
+            }
+            const storedChunks = yield getStoredChunks(hashedUrl);
+            if ((storedChunks === null || storedChunks === void 0 ? void 0 : storedChunks.length) > 0) {
+                return {
+                    success: true,
+                    chunksProcessed: storedChunks === null || storedChunks === void 0 ? void 0 : storedChunks.length,
+                    chunksFailed: 0,
+                    totalChunks: storedChunks === null || storedChunks === void 0 ? void 0 : storedChunks.length,
+                    summarizedChunks: storedChunks
+                };
             }
             // Split content into chunks
             const splitter = new textsplitters_1.RecursiveCharacterTextSplitter({
