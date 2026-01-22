@@ -7,7 +7,7 @@ function redirectToLogin() {
 
 function safeJsonParse<T>(str: string): T {
   try {
-    const cleaned = str.replace(/```json|```/g, "").trim();
+    const cleaned = str.replace(/`|`/g, "").trim();
     return JSON.parse(cleaned);
   } catch (err) {
     console.error("Invalid JSON returned by AI:", err);
