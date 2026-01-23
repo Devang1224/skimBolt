@@ -5,6 +5,7 @@ import type { GlossaryItem } from "../../types";
 import Header from "../../components/Header";
 import { useSettings } from "../../context/SettingsContext";
 import toast from "react-hot-toast";
+import SummaryLoader from "../../components/ui/SummaryLoader";
 
 interface ChatMainTypes {
   authToken: string;
@@ -48,7 +49,6 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
     try {
       console.log("checking for contest script")
 
-      setIsLoading(true);
       const [tab] = await chrome.tabs.query({
         active: true,
         currentWindow: true,
@@ -78,9 +78,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
 
     } catch (err) {
       console.log("Error while fetching cached summary", err);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   }
 
   useEffect(() => {
@@ -180,6 +178,8 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   };
 
   console.log("authToken from chatMain: ", authToken);
+  console.log("isSummaryActive?: ",isSummaryActive);
+  console.log("isLoading?: ",isLoading);
   // console.log("error",isError)
   return (
     <div className="h-[calc(100vh-43px)]">
@@ -188,7 +188,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
         <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary} />
       ) : (
         isLoading ? (
-          <p>Loading.....</p>
+          <SummaryLoader/>
         ) : (
           <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
             <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
