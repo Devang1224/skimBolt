@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { useSettings } from "../../context/SettingsContext";
 import toast from "react-hot-toast";
 import SummaryLoader from "../../components/ui/SummaryLoader";
+import { checkContentScript } from "../../helpers/helpers";
 
 interface ChatMainTypes {
   authToken: string;
@@ -16,33 +17,16 @@ interface TextContentResponse {
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
 
-  const [isSummaryActive, setIsSummaryActive] = useState(false);
+  const [isSummaryActive, setIsSummaryActive] = useState(true);
   const [blogSummary, setBlogSummary] = useState("");
   const [blogGlossary, setBlogGlossary] = useState<GlossaryItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   // const [isError,setIsError] = useState("");
   // const [isSavedSummary,setIsSavedSummary] = useState(false);
-  const [contentScriptInjected, setContentScriptInjected] = useState(false);
   const { settings } = useSettings();
   const userPastedContent = useRef<HTMLTextAreaElement | null>(null);
 
 
-  function checkContentScript(tabId: number | undefined) {
-    if (!tabId) return;
-    return new Promise((resolve) => {
-      chrome.tabs.sendMessage(
-        tabId,
-        { type: "PING_CONTENT_SCRIPT" },
-        (response: { injected?: boolean } | undefined) => {
-          if (chrome.runtime.lastError) {
-            resolve(false);
-          } else {
-            resolve(response?.injected === true);
-          }
-        }
-      );
-    });
-  }
 
 
   const isContentScriptInjected = async () => {
@@ -56,10 +40,8 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
 
       const isContentScriptInjected = await checkContentScript(tab.id);
       if (!isContentScriptInjected) {
-        setContentScriptInjected(false);
         console.log("Content script is not injected");
       } else {
-        setContentScriptInjected(true);
         console.log("Content script is injected");
       }
       // const response =  await userApi.post('/summary/check-summary',{url:tab.url});
@@ -73,8 +55,6 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       //   setIsSummaryActive(true);
       //   setIsSavedSummary(true);
       // }
-
-
 
     } catch (err) {
       console.log("Error while fetching cached summary", err);
@@ -192,11 +172,6 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
         ) : (
           <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
             <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
-            <div>
-              {
-                !contentScriptInjected && <p className="text-red-500">Content script is not injected you have to paste your content below</p>
-              }
-            </div>
             <div className="">
               <button onClick={getSummary} className="px-6 py-3 bg-blue-600  rounded-lg hover:bg-blue-700 transition-colors 
               cursor-pointer font-medium"

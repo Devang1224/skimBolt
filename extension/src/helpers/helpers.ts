@@ -16,9 +16,28 @@ function safeJsonParse<T>(str: string): T {
 }
 
 
+function checkContentScript(tabId: number | undefined) {
+  if (!tabId) return;
+  return new Promise((resolve) => {
+    chrome.tabs.sendMessage(
+      tabId,
+      { type: "PING_CONTENT_SCRIPT" },
+      (response: { injected?: boolean } | undefined) => {
+        if (chrome.runtime.lastError) {
+          resolve(false);
+        } else {
+          resolve(response?.injected === true);
+        }
+      }
+    );
+  });
+}
+
+
 export {
     redirectToLogin,
-    safeJsonParse
+    safeJsonParse,
+    checkContentScript
 }
 
 
