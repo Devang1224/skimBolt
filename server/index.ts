@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { authenticateUser } from "./middlewares/authenticate";
 import authRouter from "./routes/auth";
 import summaryRouter from "./routes/summary";
+import summaryChatRouter from "./routes/summaryChat";
 import { Provider } from "@prisma/client";
 import { sendExtensionToken } from "./helpers/sendTokenToExtension";
 import cookieParser from "cookie-parser";
@@ -48,6 +49,7 @@ app.use("/api/v1/extension-token", sendExtensionToken);
 // app.use("/api/v1/summary",summaryRouter);
 app.use("/api/v1/auth",authenticateUser,authRouter);
 app.use("/api/v1/summary",authenticateUser,summaryRouter);
+app.use("/api/v1/summaryChat",authenticateUser,summaryChatRouter);
 
 
 

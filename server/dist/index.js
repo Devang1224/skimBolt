@@ -10,6 +10,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const authenticate_1 = require("./middlewares/authenticate");
 const auth_1 = __importDefault(require("./routes/auth"));
 const summary_1 = __importDefault(require("./routes/summary"));
+const summaryChat_1 = __importDefault(require("./routes/summaryChat"));
 const sendTokenToExtension_1 = require("./helpers/sendTokenToExtension");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const redis_1 = require("./lib/redis");
@@ -26,6 +27,7 @@ app.use("/api/v1/extension-token", sendTokenToExtension_1.sendExtensionToken);
 // app.use("/api/v1/summary",summaryRouter);
 app.use("/api/v1/auth", authenticate_1.authenticateUser, auth_1.default);
 app.use("/api/v1/summary", authenticate_1.authenticateUser, summary_1.default);
+app.use("/api/v1/summaryChat", authenticate_1.authenticateUser, summaryChat_1.default);
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server is running on port", process.env.PORT);
 });
