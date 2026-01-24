@@ -17,17 +17,20 @@ const geminiApi_1 = require("../lib/geminiApi");
 const base_64_1 = __importDefault(require("base-64"));
 const withTimeout_1 = require("../helpers/withTimeout");
 const db_1 = __importDefault(require("../lib/db"));
+const prompt_1 = require("../prompt");
 const router = (0, express_1.Router)();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { query, url } = req.body;
-        if (!query || !url) {
+        const { query, url, settings: userSettings } = req.body;
+        if (!query.trim() || !url) {
             res.status(400).json({
                 message: "Some fields are missing",
                 success: false,
             });
             return;
         }
+        console.log("USER SETTINGS: ", userSettings);
         const hashedUrl = base_64_1.default.encode(url);
         const embeddings = yield (0, withTimeout_1.withTimeout)(geminiApi_1.embedd.embedQuery(query), 60000, "Embedding generation for user query");
         if (!embeddings.length) {
@@ -41,13 +44,60 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
            ORDER BY embedding <=> ${userQueryEmbedding}::vector
            LIMIT 5;
         `;
-        console.log("RELATED CONTEXTS: ", queryContext);
+        let contexts = queryContext
+            .filter(c => c.similarity > 0.6)
+            .sort((a, b) => b.similarity - a.similarity);
+        if (contexts.length === 0) {
+            contexts = queryContext
+                .sort((a, b) => b.similarity - a.similarity);
+        }
+        if (((_a = contexts[0]) === null || _a === void 0 ? void 0 : _a.similarity) > 0.85) {
+            contexts = contexts.slice(0, 1);
+        }
+        else {
+            contexts = contexts.slice(0, 3);
+        }
+        const contextString = contexts
+            .map((c, i) => `Context ${i + 1}:\n${c.content}`)
+            .join("\n\n---\n\n");
+        const aiResp = yield geminiApi_1.llm.invoke([
+            {
+                role: "system",
+                content: `
+                ${prompt_1.summaryChatPrompt}
+                ====================================================
+                  USER-CONTROLLED SETTINGS (DO NOT IGNORE)
+                ====================================================
+                        USER PREFERENCES:
+                        - Tone: ${userSettings.tone}
+                        - Language: ${userSettings.language}
+                        - Length: ${userSettings.length}
+                        
+                        RULES:
+                        - You MUST respect these settings.
+                        - If "language" is provided, the ENTIRE content must be in that language.
+                        - If "tone" is provided, adjust writing style but DO NOT change factual meaning.
+                        - If any setting is missing, fall back to defaults: 
+                          tone = "neutral", language = "English", length = "medium".
+                `
+            }, {
+                role: 'user',
+                content: `
+                { query: ${query},
+                  context: ${contextString}
+                }
+                `
+            }
+        ]);
+        const userQueryAns = aiResp.content;
         res.status(200).json({
             message: "User query processed successfully",
-            success: true
+            success: true,
+            aiResp: userQueryAns
         });
     }
     catch (err) {
+        console.log("Unable to process user query: ", err);
         return res.status(500).json({
             message: "Unable to process user query",
             success: false,
