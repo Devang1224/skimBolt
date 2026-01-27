@@ -80,12 +80,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
 
 
       const hashedUrl = base64.encode(url);
-    //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
-    
-    //   const redis = await getRedisClient();
-    //   if(!redis)return null;
-     
-    //   console.log("CONFIG____________",length,tone,language);
+
 
       const { summarizedChunks } = await chunkAndSaveContent(textContent,hashedUrl);
     //  const summarizedChunks =  [
@@ -220,9 +215,18 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             userId:user.id,
         }
     })
-    //  await redis.set( key,JSON.stringify(summary),{
-    //     EX:6*60*60 // 6 hours
-    //  });  
+    // Intializing chat 
+    const key = `chat:${user.id}:${hashedUrl}`;
+    const chat = {
+        messages:[]
+    }
+      const redis = await getRedisClient();
+      if(redis){
+           await redis.set( key,JSON.stringify(chat),{
+              EX:1*60*60 // 1 hour
+           });  
+      }
+     
 
     return res.status(200).json({
         message:"Generated summary successfully",

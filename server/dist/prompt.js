@@ -451,6 +451,7 @@ STRICT HTML CONSTRAINTS:
 - Start with exactly ONE root element: <div>.
 - Do NOT include <html>, <head>, <body>, <meta>, <title>, <style>, or <!DOCTYPE>.
 - Do NOT use <h1>, <h2>, or <h3>.
+- Do NOT add any background color.
 - No markdown.
 - No JavaScript.
 - No external styles.
