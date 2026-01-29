@@ -389,7 +389,7 @@ ${exports.BASE_PROMPT}
    ====================================================
 - Optional object.
 - May include:
-   - word_count
+   - word_count (only of the summary and not glossary)
    - detected_language
    - content_quality indicators
    - read time

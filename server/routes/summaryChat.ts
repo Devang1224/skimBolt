@@ -71,7 +71,7 @@ router.post("/",async (req,res):Promise<any>=>{
         const existingChat = await redis?.get(key);
         const chat = existingChat ? JSON.parse(existingChat) : { messages: [] };
         chat.messages = chat.messages.slice(-8);
-     console.log("CURRENT CHAT MESSAGES: ",chat.messages);
+    //  console.log("CURRENT CHAT MESSAGES: ",chat.messages);
         const aiResp = await llm.invoke([
             {
                 role:"system",

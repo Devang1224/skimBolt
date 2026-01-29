@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const base_64_1 = __importDefault(require("base-64"));
+const redis_1 = __importDefault(require("../lib/redis"));
 const db_1 = __importDefault(require("../lib/db"));
 const generateSummary_1 = require("../helpers/generateSummary");
 const chunkAndSaveContent_1 = require("../helpers/chunkAndSaveContent");
@@ -74,10 +75,6 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
         const userSettings = (_a = req.body) === null || _a === void 0 ? void 0 : _a.settings;
         const user = req.user;
         const hashedUrl = base_64_1.default.encode(url);
-        //   const key = `context:${hashedUrl}:user:${user.id}:summary`;
-        //   const redis = await getRedisClient();
-        //   if(!redis)return null;
-        //   console.log("CONFIG____________",length,tone,language);
         const { summarizedChunks } = yield (0, chunkAndSaveContent_1.chunkAndSaveContent)(textContent, hashedUrl);
         //  const summarizedChunks =  [
         //     'This guide, updated January 2nd, 2026, offers a step-by-step process for beginners to create a blog in approximately 20 minutes, requiring only basic computer skills. Authored by Scott Chow, who has been building blogs since 2002, it aims to help users avoid common mistakes.\n' +
@@ -207,9 +204,17 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
                 userId: user.id,
             }
         });
-        //  await redis.set( key,JSON.stringify(summary),{
-        //     EX:6*60*60 // 6 hours
-        //  });  
+        // Intializing chat 
+        const key = `chat:${user.id}:${hashedUrl}`;
+        const chat = {
+            messages: []
+        };
+        const redis = yield (0, redis_1.default)();
+        if (redis) {
+            yield redis.set(key, JSON.stringify(chat), {
+                EX: 1 * 60 * 60 // 1 hour
+            });
+        }
         return res.status(200).json({
             message: "Generated summary successfully",
             aiResp: masterSummary.content,

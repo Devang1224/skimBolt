@@ -18,11 +18,13 @@ const base_64_1 = __importDefault(require("base-64"));
 const withTimeout_1 = require("../helpers/withTimeout");
 const db_1 = __importDefault(require("../lib/db"));
 const prompt_1 = require("../prompt");
+const redis_1 = __importDefault(require("../lib/redis"));
 const router = (0, express_1.Router)();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const { query, url, settings: userSettings } = req.body;
+        const { id: userId } = req.user;
         if (!query.trim() || !url) {
             res.status(400).json({
                 message: "Some fields are missing",
@@ -60,6 +62,12 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const contextString = contexts
             .map((c, i) => `Context ${i + 1}:\n${c.content}`)
             .join("\n\n---\n\n");
+        const key = `chat:${userId}:${hashedUrl}`;
+        const redis = yield (0, redis_1.default)();
+        const existingChat = yield (redis === null || redis === void 0 ? void 0 : redis.get(key));
+        const chat = existingChat ? JSON.parse(existingChat) : { messages: [] };
+        chat.messages = chat.messages.slice(-8);
+        //  console.log("CURRENT CHAT MESSAGES: ",chat.messages);
         const aiResp = yield geminiApi_1.llm.invoke([
             {
                 role: "system",
@@ -79,17 +87,37 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         - If "tone" is provided, adjust writing style but DO NOT change factual meaning.
                         - If any setting is missing, fall back to defaults: 
                           tone = "neutral", language = "English", length = "medium".
+                ====================================================
+                 PREVIOUS CHAT AS CONTEXT
+                ====================================================
+               - Treat all previous messages as part of a single ongoing conversation.
+               - Use them to understand follow-up questions.
+               - Do not restate information already provided unless the user asks.
                 `
-            }, {
+            },
+            ...chat.messages,
+            {
                 role: 'user',
                 content: `
-                { query: ${query},
-                  context: ${contextString}
-                }
-                `
+                  User question: ${query}
+                  Relevant context: ${contextString}
+                  `
             }
         ]);
         const userQueryAns = aiResp.content;
+        if (redis) {
+            chat.messages.push({
+                role: 'user',
+                content: query
+            });
+            chat.messages.push({
+                role: 'assistant',
+                content: userQueryAns
+            });
+            yield redis.set(key, JSON.stringify(chat), {
+                EX: 60 * 60, // 1 hour
+            });
+        }
         res.status(200).json({
             message: "User query processed successfully",
             success: true,
