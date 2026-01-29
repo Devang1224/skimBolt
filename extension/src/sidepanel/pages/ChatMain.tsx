@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import SummaryLoader from "../../components/ui/SummaryLoader";
 import { checkContentScript } from "../../helpers/helpers";
 
+
 interface ChatMainTypes {
   authToken: string;
 }
@@ -17,9 +18,10 @@ interface TextContentResponse {
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
 
-  const [isSummaryActive, setIsSummaryActive] = useState(true);
+  const [isSummaryActive, setIsSummaryActive] = useState(false);
   const [blogSummary, setBlogSummary] = useState("");
   const [blogGlossary, setBlogGlossary] = useState<GlossaryItem[]>([]);
+  const [metaData,setMetaData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   // const [isError,setIsError] = useState("");
   // const [isSavedSummary,setIsSavedSummary] = useState(false);
@@ -145,6 +147,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       }
       console.log("fetched summary: ", data);
       setBlogSummary(data.summary);
+      setMetaData(data?.metadata);
       if (data?.glossary?.length) {
         setBlogGlossary([...data.glossary]);
       }
@@ -152,6 +155,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
 
     } catch (err) {
       console.log("error while fetching summary: ", err);
+      toast.error("Error while generating summary");
     } finally {
       setIsLoading(false)
     }
@@ -162,35 +166,71 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   console.log("isLoading?: ",isLoading);
   // console.log("error",isError)
   return (
-    <div className="h-[calc(100vh-43px)]">
-      <Header blogSummary={blogSummary} blogGlossary={blogGlossary} />
-      {isSummaryActive ? (
-        <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary} />
-      ) : (
-        isLoading ? (
-          <SummaryLoader/>
-        ) : (
-          <div className="flex-col p-2 bg-white flex-1 flex items-center justify-center gap-5 h-full">
-            <h1 className="text-2xl font-bold mb-4 text-blue-300">SkimBolt</h1>
-            <div className="">
-              <button onClick={getSummary} className="px-6 py-3 bg-blue-600  rounded-lg hover:bg-blue-700 transition-colors 
-              cursor-pointer font-medium"
-              >
-                Get Summary
-              </button>
-            </div>
-            <div className="">
-              <p className="text-center text-sm text-black/60">
-                or copy paste content here
-              </p>
-              <textarea placeholder="Drop the content here..." ref={userPastedContent}
-               className="text-black/60 border border-black/60 mt-10 p-2 h-[10vh] w-[50vw]"
-              >
-              </textarea>
-            </div>
-          </div>)
-      )}
-    </div>
+    <div className="min-h-[calc(100vh-43px)] bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
+    <Header blogSummary={blogSummary} blogGlossary={blogGlossary}  />
+  
+    {isSummaryActive ? (
+      <SummaryPage blogSummary={blogSummary} blogGlossary={blogGlossary} blogMetaData={metaData} />
+    ) : isLoading ? (
+      <SummaryLoader />
+    ) : (
+      <div className="flex-1 flex items-center justify-center px-4">
+        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-blue-100 p-8 flex flex-col gap-6">
+          
+          {/* Hero */}
+          <div className="text-center">
+            <h1 className="text-3xl font-extrabold text-blue-600 tracking-tight">
+              SkimBolt ⚡
+            </h1>
+            <p className="mt-2 text-sm text-black/60 leading-relaxed">
+              Turn any long article into a crisp, AI-powered summary in seconds.
+            </p>
+          </div>
+  
+          <button
+            onClick={getSummary}
+            className="w-full py-3 rounded-xl bg-blue-600 text-white font-medium
+            hover:bg-blue-700 active:scale-[0.98] transition-all shadow-md cursor-pointer"
+          >
+            Generate Summary
+          </button>
+  
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-black/10" />
+            <span className="text-xs text-black/40 uppercase tracking-wide">
+              or
+            </span>
+            <div className="flex-1 h-px bg-black/10" />
+          </div>
+  
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-black/70">
+              Paste your content
+            </label>
+            <textarea
+              ref={userPastedContent}
+              placeholder="Drop the article content here…"
+              className="w-full h-28 resize-none rounded-xl border border-black/20 p-3
+              text-sm text-black/70 placeholder:text-black/30
+              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400
+              transition"
+              onKeyUp={(e)=>{
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                   getSummary()
+                }
+              }}
+            />
+          </div>
+  
+          <p className="text-xs text-center text-black/40">
+            Works best with articles, blogs, and documentation.
+          </p>
+        </div>
+      </div>
+    )}
+  </div>
+  
   );
 };
 

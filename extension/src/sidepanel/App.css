@@ -67,3 +67,29 @@
   scrollbar-color: #817e7e8c #f0f0f0; 
 
 }
+
+/* Shimmer loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgba(20, 20, 20, 0.95) 0%,
+    rgba(220, 220, 220, 1) 50%,
+    rgba(20, 20, 20, 0.95) 100% 
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: rgba(0, 0, 0, 0.7);
+  animation: shimmer 2s infinite linear;
+  display: inline-block;
+}

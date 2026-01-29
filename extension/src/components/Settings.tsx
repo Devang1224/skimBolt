@@ -2,8 +2,6 @@ import { BiTime } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
 
 import { 
-    MdOutlineFileDownload,
-    MdOutlineContentCopy,
     MdOutlineLanguage,
     MdOutlineRecordVoiceOver
   } from "react-icons/md";
@@ -83,30 +81,30 @@ console.log("isSettingsOpen: ",isSettingsOpen);
               className="w-full pl-7 pr-2 py-1.5 bg-white border border-blue-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               aria-label="Language"
             >
-              <option value="english">English</option>
-              <option value="spanish">Spanish</option>
-              <option value="french">French</option>
-              <option value="german">German</option>
-              <option value="chinese">Chinese</option>
-              <option value="hindi">Hindi</option>
-              <option value="japanese">Japanese</option>
-              <option value="korean">Korean</option>
-              <option value="italian">Italian</option>
-              <option value="portuguese">Portuguese</option>
-              <option value="russian">Russian</option>
-              <option value="arabic">Arabic</option>
-              <option value="bengali">Bengali</option>
-              <option value="urdu">Urdu</option>
-              <option value="turkish">Turkish</option>
-              <option value="thai">Thai</option>
-              <option value="vietnamese">Vietnamese</option>
-              <option value="indonesian">Indonesian</option>
-              <option value="dutch">Dutch</option>
-              <option value="polish">Polish</option>
-              <option value="swedish">Swedish</option>
-              <option value="filipino">Filipino</option>
-              <option value="romanian">Romanian</option>
-              <option value="ukrainian">Ukrainian</option>                  
+                <option value="english">English</option>
+                <option value="spanish">Español</option>
+                <option value="french">Français</option>
+                <option value="german">Deutsch</option>
+                <option value="chinese">中文</option>
+                <option value="hindi">हिन्दी</option>
+                <option value="japanese">日本語</option>
+                <option value="korean">한국어</option>
+                <option value="italian">Italiano</option>
+                <option value="portuguese">Português</option>
+                <option value="russian">Русский</option>
+                <option value="arabic">العربية</option>
+                <option value="bengali">বাংলা</option>
+                <option value="urdu">اردو</option>
+                <option value="turkish">Türkçe</option>
+                <option value="thai">ไทย</option>
+                <option value="vietnamese">Tiếng Việt</option>
+                <option value="indonesian">Bahasa Indonesia</option>
+                <option value="dutch">Nederlands</option>
+                <option value="polish">Polski</option>
+                <option value="swedish">Svenska</option>
+                <option value="filipino">Filipino</option>
+                <option value="romanian">Română</option>
+                <option value="ukrainian">Українська</option>              
             </select>
           </div>
         </div>
@@ -132,7 +130,7 @@ console.log("isSettingsOpen: ",isSettingsOpen);
         </div>
 
         {/* Actions */}
-        <div className="col-span-2 flex items-center justify-end gap-2 pt-1">
+        {/* <div className="col-span-2 flex items-center justify-end gap-2 pt-1">
           <button className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors text-sm font-medium" aria-label="Copy">
             <MdOutlineContentCopy size={14} />
             <span>Copy</span>
@@ -141,7 +139,7 @@ console.log("isSettingsOpen: ",isSettingsOpen);
             <MdOutlineFileDownload size={14} />
             <span>Export</span>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   </div>

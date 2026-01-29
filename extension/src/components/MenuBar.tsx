@@ -4,11 +4,13 @@ import { BiTime } from 'react-icons/bi'
 interface MenuBarProps {
     setActiveTab:(tab:string)=>void,
     activeTab:string,
+    blogMetaData:any;
 }
 
 const MenuBar = ({
     setActiveTab,
-    activeTab
+    activeTab,
+    blogMetaData
 }:MenuBarProps) => {
   return (
     <div className="p-1">
@@ -35,7 +37,7 @@ const MenuBar = ({
       </div>
       <div className="flex items-center space-x-1 text-slate-500">
         <BiTime size={14} />
-        <span className="font-medium text-xs">2 min read</span>
+        <span className="font-medium text-xs">{Math.ceil(blogMetaData?.word_count / 200)} min read</span>
       </div>
     </div>
   </div>

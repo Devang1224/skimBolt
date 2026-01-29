@@ -36,13 +36,19 @@ function App() {
 
 
   return (
-    <div className="">
+    <div className="h-full">
       {authToken ? (
         <ChatMain authToken={authToken} />
       ) : (
-        <div>
-          <h1>LOGIN 🚀</h1>
-          <p>This is a Chrome Extension built with CRXJS + Vite + React.</p>
+        <div className="flex h-full flex-1 items-center justify-center px-4 bg-gradient-to-br from-slate-50 to-blue-50">
+          <div className="w-full max-w-md text-center space-y-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-4">
+              <span className="text-2xl">🚀</span>
+            </div>
+            <h1 className="text-3xl font-bold text-blue-600 tracking-tight">
+              LOGIN
+            </h1>
+          </div>
         </div>
       )}
     </div>

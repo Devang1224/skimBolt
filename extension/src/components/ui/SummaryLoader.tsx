@@ -27,7 +27,7 @@ const SummaryLoader = ({
     if (typeof activeStep === "number") return;
     const id = window.setInterval(() => {
       if(autoStep < stepMessages.length - 1){
-        setAutoStep((prev) => (prev + 1) % stepMessages.length);
+        setAutoStep((prev) => prev + 1);
       }
     }, intervalMs);
     return () => window.clearInterval(id);
@@ -39,7 +39,7 @@ const SummaryLoader = ({
       : autoStep;
 
   return (
-    <div className="h-full flex items-center justify-center bg-white">
+    <div className="flex-1 flex items-center justify-center bg-white">
       <div className="flex flex-col items-center justify-center gap-3">
         <div className="flex flex-row gap-2">
           <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]" />

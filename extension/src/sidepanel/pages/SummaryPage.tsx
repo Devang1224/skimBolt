@@ -1,6 +1,5 @@
-"use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { IoMdSend } from "react-icons/io";
 import Glossary from "../../components/Glossary";
@@ -15,6 +14,7 @@ import { useSettings } from "../../context/SettingsContext";
 interface SummaryPageProps {
   blogSummary: string;
   blogGlossary: GlossaryItem[];
+  blogMetaData:any;
 }
 
 interface ChatItemType {
@@ -22,17 +22,28 @@ interface ChatItemType {
   content:string,
 }
 
-const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
+const SummaryPage = ({ blogSummary, blogGlossary,blogMetaData }: SummaryPageProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, setActiveTab] = useState("summary");
   const {settings}  = useSettings();
   const [chats,setChats] = useState<ChatItemType[]>([]);
+  const [loadingAiResp,setLoadingAiResp] = useState(false);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chats, loadingAiResp]);
 
   const handleInput = () => {
     const el = textareaRef.current;
     if (!el) return;
+    const maxHeight = 144; // match Tailwind max-h-36 (9rem * 16px)
     el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
+    const newHeight = Math.min(el.scrollHeight, maxHeight);
+    el.style.height = `${newHeight}px`;
+    el.style.overflowY = el.scrollHeight > maxHeight ? "auto" : "hidden";
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -68,7 +79,7 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
         role:"user",
         content:ques,
       }]));
-
+      setLoadingAiResp(true);
        const res = await userApi.post(`/summaryChat`,{
         source:'user',
         query:ques,
@@ -86,6 +97,8 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
     } catch (err) {
       console.log("Error while sending the query",err);
       toast.error(`Error While Sending The Query: ${err}`);
+    } finally {
+      setLoadingAiResp(false);
     }
   };
 
@@ -98,19 +111,20 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
 
   console.log(blogSummary, blogGlossary);
   return (
-    <div className="bg-gray-600">
+    <div className="bg-gray-600 h-full">
       <div className=" mx-auto bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col overflow-hidden relative">
         {/* Header */}
 
         <div className="flex-1 flex flex-col min-h-0">
           <div className="flex-1 p-1 ">
             <div className="w-full max-w-none">
-              <MenuBar setActiveTab={setActiveTab} activeTab={activeTab} />
+              <MenuBar setActiveTab={setActiveTab} activeTab={activeTab} blogMetaData={blogMetaData}/>
 
               {activeTab === "summary" && (
                 <div
+                  ref={chatContainerRef}
                   className="bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 
-               shadow-sm overflow-y-auto h-[calc(100vh-170px)] scrollbar_custom"
+                  shadow-sm overflow-y-auto h-[calc(100vh-170px)] scrollbar_custom"
                   style={{
                     scrollbarWidth: "thin",
                     scrollbarColor: "#817e7e8c #f0f0f0",
@@ -129,12 +143,20 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
                       <div key={index} className= {`flex flex-col gap-2 text-black/70  
                                       ${item.role ==='system' ? 'items-start' : 'items-end'} `}>
                          <p className="uppercase">{item.role}</p>
-                         <div className="bg-blue-300/40 rounded-lg p-2">
-                           <div className="text-left" dangerouslySetInnerHTML={{__html: item.content}}/>
+                         <div className="bg-blue-300/40 rounded-lg p-2 ">
+                           <div className="text-left text-[14px]" dangerouslySetInnerHTML={{__html: item.content}}/>
                           </div>
                       </div>
                      </div>
                     ))
+                  }
+                  {
+                    loadingAiResp && (
+                      <div className= {`flex flex-col gap-2 text-black/70 items-start`}>
+                         <p className="uppercase">SYSTEM</p>
+                         <span className="shimmer-text font-medium text-sm">Thinking...</span>
+                      </div>
+                    )
                   }
                 </div>
               )}
@@ -147,7 +169,7 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
             </div>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm border-t border-slate-200 p-3">
+        {activeTab!="glossary" &&  <div className="bg-white/80 backdrop-blur-sm border-t border-slate-200 p-3">
             <div className="w-full max-w-none">
               <div className="flex items-center space-x-3">
                 <div className="flex-1 relative">
@@ -177,7 +199,7 @@ const SummaryPage = ({ blogSummary, blogGlossary }: SummaryPageProps) => {
                 </button>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>
