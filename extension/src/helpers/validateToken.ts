@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { clearAuthToken, redirectToLogin } from "./helpers";
+import { clearAuthToken } from "./helpers";
 import axios from "axios";
 
 export const validateToken = async (token:string)=>{
@@ -22,9 +22,11 @@ export const validateToken = async (token:string)=>{
 
       if(err.response?.data?.code=='ERR_JWT_EXPIRED'){
         console.log("Expired Token Detected");
-        toast.error("Session is expired. Please Relogin");
+        setTimeout(()=>{
+            toast.error("Session is expired. Please Relogin");
+        },1000)
         console.log('clearing token from site and extension');
-        clearAuthToken();
+        await clearAuthToken();
         // redirectToLogin();
     }
 

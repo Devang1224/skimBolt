@@ -18,7 +18,7 @@ interface TextContentResponse {
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
 
-  const [isSummaryActive, setIsSummaryActive] = useState(true);
+  const [isSummaryActive, setIsSummaryActive] = useState(false);
   const [blogSummary, setBlogSummary] = useState("");
   const [blogGlossary, setBlogGlossary] = useState<GlossaryItem[]>([]);
   const [metaData,setMetaData] = useState({});

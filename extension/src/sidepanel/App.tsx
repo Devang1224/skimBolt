@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import ChatMain from "./pages/ChatMain";
+import toast from "react-hot-toast";
 
 function App() {
   // =======================================================================
@@ -16,8 +17,13 @@ function App() {
         console.log("found no response from fetchauthtoken");
         return;
       }
+      if (response.status === "UNAUTHENTICATED") {
+           toast.error("Session is expired. Please Relogin");
+          setAuthToken("");
+      }
 
       if (response.status === "AUTHENTICATED") {
+        console.log("Auth token has been authenticated");
         setAuthToken(response.token);
       }
     });
@@ -45,12 +51,9 @@ function App() {
             className="w-full max-w-sm rounded-2xl border border-skimbolt-card-border bg-skimbolt-card-bg backdrop-blur-xl
                      shadow-[0_20px_40px_var(--color-skimbolt-card-shadow)] p-6 text-center space-y-5"
           >
-            <div
-              className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl
-                          bg-gradient-to-br from-skimbolt-logo-gradient-start to-skimbolt-logo-gradient-end shadow-md"
-            >
-              <span className="text-xl text-skimbolt-text-white">🚀</span>
-            </div>
+             <div className="w-8 h-8 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">S</span>
+              </div>
 
             <div className="space-y-1">
               <h1 className="text-2xl font-semibold tracking-tight text-skimbolt-text-primary">

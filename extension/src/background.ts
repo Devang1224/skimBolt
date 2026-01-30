@@ -78,26 +78,32 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   (async () => {
     try {
+      console.log("checking token in extension");
       const { ["auth-token"]: storedToken } =
         await chrome.storage.local.get("auth-token");
 
       if (storedToken && (await validateToken(storedToken))) {
+      console.log("Token valiated");
         sendResponse({ status: "AUTHENTICATED", token: storedToken });
         return;
       }
+      console.log("Token not found in the extension");
 
-      await chrome.storage.local.remove("auth-token");
-
+      // await chrome.storage.local.remove("auth-token");
+      console.log("Grabbing token from website cookies");
+   
       const cookie = await chrome.cookies.get({
         url: import.meta.env.VITE_WEB_URL,
         name: "auth-token",
       });
 
       if (cookie?.value) {
+      console.log("Token foundin the cookie");
         await chrome.storage.local.set({ "auth-token": cookie.value });
         sendResponse({ status: "AUTHENTICATED", token: cookie.value });
         return;
       }
+      console.log("TOken not found in the cookie");
 
       sendResponse({ status: "UNAUTHENTICATED" });
     } catch (err) {
@@ -141,22 +147,3 @@ chrome.runtime.onMessageExternal.addListener((msg,_sender,sendResponse)=>{
 
  
 
-// get the active chrome tab
-// chrome.runtime.onMessage.addListener((msg,_sender,sendResponse)=>{
-//     if(msg?.type === "GET_ACTIVE_TAB_URL"){
-//         chrome.tabs.query({
-//             active:true,
-//             currentWindow:true,
-//         },(tabs)=>{
-//             sendResponse({url: tabs[0]?.url || ""})
-//         })
-//         return true;
-//     }else if(msg?.type === "STORE_JWT"){
-//         console.log("message token",msg.token);        
-//     }
-// });
-
-// get token from the cookie
-// chrome.cookies.get({url: "http://localhost:3000",name:'auth-token'},(cookie)=>{
-//     console.log("cookie: ",cookie);
-// });

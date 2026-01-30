@@ -33,12 +33,18 @@ function checkContentScript(tabId: number | undefined) {
   });
 }
 
-function clearAuthToken(){
-  chrome.storage.local.remove("auth-token");
-  chrome.cookies.remove({
+async function clearAuthToken(){
+  try{
+
+    await chrome.storage.local.remove("auth-token");
+    await chrome.cookies.remove({
       url:import.meta.env.VITE_WEB_URL,
       name:'auth-token'
-  })
+    })
+  }catch(err){
+    console.log("Error while remove token");
+    return err;
+  }
 }
 
 
