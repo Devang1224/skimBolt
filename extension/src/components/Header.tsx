@@ -2,10 +2,6 @@ import { useState } from 'react'
 import { 
     IoSettingsOutline, 
   } from "react-icons/io5";
-  import { 
-  
-    MdOutlineHistory,
-  } from "react-icons/md";
 import Settings from './Settings';
 
 import type { GlossaryItem } from '../types';
@@ -62,9 +58,9 @@ const Header = ({
               </button>
             )
           } */}
-          <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer">
+          {/* <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer">
             <MdOutlineHistory className="text-blue-600 group-hover:text-blue-700" size={18} />
-          </button>
+          </button> */}
           <button className="p-2 hover:bg-blue-50 rounded-lg transition-colors group cursor-pointer"
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
           >

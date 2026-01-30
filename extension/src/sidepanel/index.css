@@ -23,6 +23,32 @@
   --color-background-light:var(--background-light);
   --color-background-dark:var(--background-dark);
 
+  /* SkimBolt Login Card Colors */
+  --color-skimbolt-bg-gradient-start: #ffffff;
+  --color-skimbolt-bg-gradient-mid: #eff6ff;
+  --color-skimbolt-bg-gradient-end: #faf5ff;
+  
+  --color-skimbolt-card-border: rgba(255, 255, 255, 0.6);
+  --color-skimbolt-card-bg: rgba(255, 255, 255, 0.7);
+  --color-skimbolt-card-shadow: rgba(59, 130, 246, 0.15);
+  
+  --color-skimbolt-logo-gradient-start: #3b82f6;
+  --color-skimbolt-logo-gradient-end: #a855f7;
+  
+  --color-skimbolt-text-primary: #1e293b;
+  --color-skimbolt-text-accent: #2563eb;
+  --color-skimbolt-text-secondary: #64748b;
+  --color-skimbolt-text-tertiary: #94a3b8;
+  --color-skimbolt-text-white: #ffffff;
+  
+  --color-skimbolt-divider: #e2e8f0;
+  
+  --color-skimbolt-button-gradient-start: #2563eb;
+  --color-skimbolt-button-gradient-end: #9333ea;
+  --color-skimbolt-button-shadow: rgba(59, 130, 246, 0.3);
+  
+  --color-skimbolt-focus-ring: #60a5fa;
+
 }
 
 

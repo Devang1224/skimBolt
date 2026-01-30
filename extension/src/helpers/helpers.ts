@@ -1,6 +1,6 @@
 
 function redirectToLogin() {
-  const loginUrl = `${import.meta.env.VITE_BACKEND_URL}/signin`; 
+  const loginUrl = `${import.meta.env.VITE_WEB_URL}/signin`; 
   chrome.tabs.create({ url: loginUrl });
 }
 
@@ -33,11 +33,20 @@ function checkContentScript(tabId: number | undefined) {
   });
 }
 
+function clearAuthToken(){
+  chrome.storage.local.remove("auth-token");
+  chrome.cookies.remove({
+      url:import.meta.env.VITE_WEB_URL,
+      name:'auth-token'
+  })
+}
+
 
 export {
     redirectToLogin,
     safeJsonParse,
-    checkContentScript
+    checkContentScript,
+    clearAuthToken
 }
 
 

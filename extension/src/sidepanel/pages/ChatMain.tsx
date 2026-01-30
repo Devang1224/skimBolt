@@ -18,7 +18,7 @@ interface TextContentResponse {
 
 const ChatMain = ({ authToken }: ChatMainTypes) => {
 
-  const [isSummaryActive, setIsSummaryActive] = useState(false);
+  const [isSummaryActive, setIsSummaryActive] = useState(true);
   const [blogSummary, setBlogSummary] = useState("");
   const [blogGlossary, setBlogGlossary] = useState<GlossaryItem[]>([]);
   const [metaData,setMetaData] = useState({});
@@ -166,7 +166,7 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
   console.log("isLoading?: ",isLoading);
   // console.log("error",isError)
   return (
-    <div className="min-h-[calc(100vh-43px)] bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
+    <div className="min-h-[calc(100vh)] bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
     <Header blogSummary={blogSummary} blogGlossary={blogGlossary}  />
   
     {isSummaryActive ? (
