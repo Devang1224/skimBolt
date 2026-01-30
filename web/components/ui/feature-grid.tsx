@@ -3,7 +3,7 @@ import FeatureCard from "./feature-card";
 
 export default function FeatureGrid() {
   return (
-    <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
       <FeatureCard
         icon={<FiClock className="w-8 h-8" />}
         title="Save Time"

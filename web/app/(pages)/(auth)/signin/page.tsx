@@ -29,7 +29,7 @@ export default function SignIn() {
       );
       const body = res?.data;
       if (body.success) {
-        // On your website - make it persistent
+       
         //  todo: enter secure here
         document.cookie = `auth-token=${accessToken}; domain=localhost; samesite=strict; max-age=2592000`; // 30 days
 
@@ -140,7 +140,7 @@ export default function SignIn() {
             Sign in with Google
           </span>
         </button>
-        <button
+        {/* <button
           onClick={() => handleSignIn("twitter")}
           className="w-full mb-4 py-3 px-4 bg-white border border-[#e0e0e0] rounded-lg font-semibold text-[#234e70] shadow-sm hover:shadow-md hover:bg-[#f1f5f9] transition-all flex items-center justify-center gap-3 group"
         >
@@ -153,8 +153,8 @@ export default function SignIn() {
           <span className="group-hover:text-[#1DA1F2] transition-colors">
             Sign in with Twitter
           </span>
-        </button>
-        <button
+        </button> */}
+        {/* <button
           onClick={() => handleSignIn("apple")}
           className="w-full py-3 px-4 bg-white border border-[#e0e0e0] rounded-lg font-semibold text-[#234e70] shadow-sm hover:shadow-md hover:bg-[#f1f5f9] transition-all flex items-center justify-center gap-3 group"
         >
@@ -167,13 +167,13 @@ export default function SignIn() {
           <span className="group-hover:text-black transition-colors">
             Sign in with Apple
           </span>
-        </button>
+        </button> */}
         <div className="flex items-center w-full my-6">
           {/* <div className="flex-grow h-px bg-[#e0e0e0]" />
           <span className="mx-4 text-[#b0b0b0] text-xs">or</span>
           <div className="flex-grow h-px bg-[#e0e0e0]" /> */}
         </div>
-        <p className="text-xs text-[#b0b0b0] text-center mb-2">
+        {/* <p className="text-xs text-[#b0b0b0] text-center mb-2">
           By signing in, you agree to our{" "}
           <a href="#" className="underline hover:text-[#234e70]">
             Terms of Service
@@ -183,7 +183,7 @@ export default function SignIn() {
             Privacy Policy
           </a>
           .
-        </p>
+        </p> */}
         <footer className="mt-4 text-xs text-[#b0b0b0] text-center w-full">
           &copy; {new Date().getFullYear()} SkimBolt. All rights reserved.
         </footer>

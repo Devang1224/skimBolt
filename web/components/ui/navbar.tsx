@@ -63,7 +63,7 @@ const handleSignOut = async ()=>{
             >
               About
             </a>
-            <a 
+            {/* <a 
               href="#pricing" 
               className="text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium"
             >
@@ -74,7 +74,8 @@ const handleSignOut = async ()=>{
               className="text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium"
             >
               Help
-            </a>{
+            </a> */}
+            {
               session?.user?.email ? (
                 <button className="cursor-pointer bg-gradient-to-r from-pink-500
                   via-purple-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"

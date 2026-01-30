@@ -3,19 +3,41 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* SkimBolt Design System (aligned with extension) */
+  --skimbolt-bg-gradient-start: #ffffff;
+  --skimbolt-bg-gradient-mid: #eff6ff;
+  --skimbolt-bg-gradient-end: #faf5ff;
+  --skimbolt-card-border: rgba(255, 255, 255, 0.6);
+  --skimbolt-card-bg: rgba(255, 255, 255, 0.7);
+  --skimbolt-card-shadow: rgba(59, 130, 246, 0.15);
+  --skimbolt-logo-gradient-start: #3b82f6;
+  --skimbolt-logo-gradient-end: #a855f7;
+  --skimbolt-text-primary: #1e293b;
+  --skimbolt-text-accent: #2563eb;
+  --skimbolt-text-secondary: #64748b;
+  --skimbolt-text-tertiary: #94a3b8;
+  --skimbolt-text-white: #ffffff;
+  --skimbolt-divider: #e2e8f0;
+  --skimbolt-button-gradient-start: #2563eb;
+  --skimbolt-button-gradient-end: #9333ea;
+  --skimbolt-button-shadow: rgba(59, 130, 246, 0.3);
+  --skimbolt-focus-ring: #60a5fa;
+  --skimbolt-surface-glass: rgba(255, 255, 255, 0.65);
+  --skimbolt-surface-glass-border: rgba(255, 255, 255, 0.4);
+  --skimbolt-shadow-soft: 0 4px 24px rgba(30, 41, 59, 0.08);
+  --skimbolt-shadow-elevated: 0 12px 40px rgba(30, 41, 59, 0.12);
 }
-*{
-  /* margin: 0; */
-  /* padding: 0; */
+
+* {
   box-sizing: border-box;
-  /* font-family: 'Poppins', sans-serif; */
   scroll-behavior: smooth;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter), var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 

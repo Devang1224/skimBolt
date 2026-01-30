@@ -1,15 +1,24 @@
 import FloatingElements from "@/components/ui/floating-elements";
 import Navbar from "@/components/ui/navbar";
 import Hero from "@/components/sections/Hero";
+import FeaturesSection from "@/components/sections/FeaturesSection";
+import AboutSection from "@/components/sections/AboutSection";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   return (
-    <div id="hero" className="bg-gradient-to-br from-[#fbc2eb] via-[#a6c1ee] to-[#f6f9fc] min-h-screen relative">
+    <div className="bg-[#f6f9fc] min-h-screen relative">
       <FloatingElements />
-      
+
       <Navbar />
-      
-    <Hero/>
+
+      <Hero />
+
+      <FeaturesSection />
+
+      <AboutSection />
+
+      <Footer />
     </div>
   );
 }
