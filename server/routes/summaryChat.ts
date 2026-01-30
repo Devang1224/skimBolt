@@ -132,8 +132,9 @@ router.post("/",async (req,res):Promise<any>=>{
             aiResp:userQueryAns
         });
 
-    }catch(err){
+    }catch(err:any){
         console.log("Unable to process user query: ",err);
+       
         return res.status(500).json({
             message:"Unable to process user query",
             success:false,

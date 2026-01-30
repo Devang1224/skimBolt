@@ -53,7 +53,15 @@ function authenticateUser(req, res, next) {
             next();
         }
         catch (err) {
-            console.log("🔴 jwt error", err);
+            // console.log("🔴 jwt error", err);
+            if (err.code == 'ERR_JWT_EXPIRED') {
+                res.status(401).json({
+                    message: "Expired Token please relogin",
+                    code: 'ERR_JWT_EXPIRED',
+                    success: false
+                });
+                return;
+            }
             res.status(500).json({
                 message: "Something went wrong with JWT",
             });

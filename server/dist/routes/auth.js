@@ -15,6 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = __importDefault(require("../lib/db"));
 const router = express_1.default.Router();
+router.post("/validateAuthToken", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return res.status(200).json({
+            message: "Auth token validated",
+            success: true,
+        });
+    }
+    catch (err) {
+        return res.status(500).json({
+            message: "Something went wrong while validating auth token",
+            success: false,
+        });
+    }
+}));
 router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, provider, providerAccountId } = req.user;

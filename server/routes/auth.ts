@@ -3,6 +3,20 @@ import prisma from "../lib/db";
 
 const router = express.Router();
 
+router.post("/validateAuthToken",async(req:Request,res:Response):Promise<any>=>{
+    try{
+        return res.status(200).json({
+            message:"Auth token validated",
+            success:true,
+        })
+    }catch(err){
+        return res.status(500).json({
+            message:"Something went wrong while validating auth token",
+            success:false,
+        })
+    }
+})
+
 router.post('/signin',async (req:Request,res:Response):Promise<any> => {
     try{
          const {name,email,provider,providerAccountId} = req.user;
