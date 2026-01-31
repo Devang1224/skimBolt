@@ -14,13 +14,14 @@
   --skimbolt-logo-gradient-start: #3b82f6;
   --skimbolt-logo-gradient-end: #a855f7;
   --skimbolt-text-primary: #1e293b;
-  --skimbolt-text-accent: #2563eb;
+  --skimbolt-text-accent: #3b82f6;
+  --skimbolt-text-accent-end: #a855f7;
   --skimbolt-text-secondary: #64748b;
   --skimbolt-text-tertiary: #94a3b8;
   --skimbolt-text-white: #ffffff;
   --skimbolt-divider: #e2e8f0;
-  --skimbolt-button-gradient-start: #2563eb;
-  --skimbolt-button-gradient-end: #9333ea;
+  --skimbolt-button-gradient-start: #3b82f6;
+  --skimbolt-button-gradient-end: #a855f7;
   --skimbolt-button-shadow: rgba(59, 130, 246, 0.3);
   --skimbolt-focus-ring: #60a5fa;
   --skimbolt-surface-glass: rgba(255, 255, 255, 0.65);

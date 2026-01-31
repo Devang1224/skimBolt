@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FiZap } from "react-icons/fi";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,10 +13,20 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Logo + name */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-[#3b82f6] to-[#a855f7] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">S</span>
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
+              style={{
+                background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
+              }}
+            >
+              <FiZap className="w-4 h-4" aria-hidden />
             </div>
-            <span className="text-lg font-bold text-[#1e293b]">SkimBolt</span>
+            <span className="text-lg font-bold text-[#1e293b]">
+              Skim
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">
+                Bolt
+              </span>
+            </span>
           </div>
 
           {/* Links */}
@@ -25,28 +36,28 @@ export default function Footer() {
           >
             <Link
               href="/extension"
-              className="text-sm text-[#64748b] hover:text-[#2563eb] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
+              className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
             >
               Extension
             </Link>
             <Link
               href="/signin"
-              className="text-sm text-[#64748b] hover:text-[#2563eb] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
+              className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
             >
               Sign in
             </Link>
-            <a
+            {/* <a
               href="#"
-              className="text-sm text-[#64748b] hover:text-[#2563eb] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
+              className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
             >
               Privacy
             </a>
             <a
               href="#"
-              className="text-sm text-[#64748b] hover:text-[#2563eb] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
+              className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
             >
               Terms
-            </a>
+            </a> */}
           </nav>
         </div>
 

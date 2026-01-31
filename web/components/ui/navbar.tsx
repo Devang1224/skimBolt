@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
+import { FiZap } from "react-icons/fi";
 declare const chrome: any;
 
 export default function Navbar() {
@@ -48,43 +49,49 @@ const handleSignOut = async ()=>{
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
+                style={{
+                  background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
+                }}
+              >
+                <FiZap className="w-4 h-4" aria-hidden />
               </div>
-              <span className="text-xl font-bold text-[#1a254b]">SkimBolt</span>
+              <span className="text-xl font-bold text-[#1e293b]">
+                Skim<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">Bolt</span>
+              </span>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <a 
-              href="#about" 
-              className="text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium"
+              href="#how-it-works" 
+              className="text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium"
             >
-              About
+              How It Works
             </a>
             {/* <a 
               href="#pricing" 
-              className="text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium"
+              className="text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium"
             >
               Pricing
             </a>
             <a 
               href="#help" 
-              className="text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium"
+              className="text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium"
             >
               Help
             </a> */}
             {
               session?.user?.email ? (
-                <button className="cursor-pointer bg-gradient-to-r from-pink-500
-                  via-purple-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
+                <button className="cursor-pointer bg-gradient-to-r from-[#3b82f6] to-[#a855f7] text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:opacity-95 transition-all duration-200"
                   onClick={() => handleSignOut()}
                   >
                     Sign Out
                 </button>
               ) : (
-                <button className="cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all duration-200">
+                <button className="cursor-pointer bg-gradient-to-r from-[#3b82f6] to-[#a855f7] text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg hover:opacity-95 transition-all duration-200">
                   <Link href="/signin">
                     Sign In
                   </Link>
@@ -97,7 +104,7 @@ const handleSignOut = async ()=>{
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-[#1a254b] hover:text-[#3b5b7e] transition-colors duration-200"
+              className="text-[#1e293b] hover:text-[#64748b] transition-colors duration-200"
             >
               {isMenuOpen ? (
                 <HiX className="w-6 h-6" />
@@ -114,27 +121,27 @@ const handleSignOut = async ()=>{
             <div className="container mx-auto px-6 py-4 space-y-4">
               <a 
                 href="#about" 
-                className="block text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium py-2"
+                className="block text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </a>
-              <a 
+              {/* <a 
                 href="#pricing" 
-                className="block text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium py-2"
+                className="block text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Pricing
-              </a>
-              <a 
+              </a> */}
+              {/* <a 
                 href="#help" 
-                className="block text-[#3b5b7e] hover:text-[#1a254b] transition-colors duration-200 font-medium py-2"
+                className="block text-[#64748b] hover:text-[#3b82f6] transition-colors duration-200 font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Help
-              </a>
+              </a> */}
               <button 
-                className="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                className="w-full bg-gradient-to-r from-[#3b82f6] to-[#a855f7] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Login

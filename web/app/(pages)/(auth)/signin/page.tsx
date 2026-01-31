@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { FiZap } from "react-icons/fi";
 
 declare const chrome: any;
 type Provider = "google" | "twitter" | "apple";
@@ -76,16 +77,21 @@ export default function SignIn() {
 
   if (session) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#a6c1ee] to-[#f6f9fc]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#eff6ff] via-[#faf5ff] to-[#f8fafc]">
         <div className="bg-white/90 shadow-2xl rounded-2xl px-10 py-12 flex flex-col items-center max-w-md w-full">
           <div className="mb-6 flex flex-col items-center">
-            <div className="w-14 h-14 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full flex items-center justify-center mb-2">
-              <span className="text-white font-extrabold text-2xl">S</span>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-md mb-2"
+              style={{
+                background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
+              }}
+            >
+              <FiZap className="w-5 h-5" aria-hidden />
             </div>
-            <h2 className="text-2xl font-bold text-[#1a254b]">
+            <h2 className="text-2xl font-bold text-[#1e293b]">
               You are already signed in
             </h2>
-            <p className="text-[#3b5b7e] mt-2">{session.user?.email}</p>
+            <p className="text-[#64748b] mt-2">{session.user?.email}</p>
           </div>
         </div>
       </div>
@@ -93,16 +99,21 @@ export default function SignIn() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#fbc2eb] via-[#a6c1ee] to-[#f6f9fc]">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#eff6ff] via-[#faf5ff] to-[#f8fafc]">
       <div className="bg-white/90 shadow-2xl rounded-2xl px-10 py-12 flex flex-col items-center max-w-md w-full">
         <div className="mb-6 flex flex-col items-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full flex items-center justify-center mb-3 shadow-lg">
-            <span className="text-white font-extrabold text-3xl">S</span>
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg mb-3"
+            style={{
+              background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
+            }}
+          >
+            <FiZap className="w-6 h-6" aria-hidden />
           </div>
-          <h1 className="text-3xl font-bold mb-2 text-[#1a254b]">
+          <h1 className="text-3xl font-bold mb-2 text-[#1e293b]">
             Sign in to SkimBolt
           </h1>
-          <p className="text-[#3b5b7e] text-sm">
+          <p className="text-[#64748b] text-sm">
             Get started with your favorite provider
           </p>
         </div>
@@ -113,7 +124,7 @@ export default function SignIn() {
         )}
         <button
           onClick={() => handleSignIn("google")}
-          className="w-full mb-4 py-3 px-4 bg-white border border-[#e0e0e0] rounded-lg font-semibold text-[#234e70] shadow-sm hover:shadow-md hover:bg-[#f1f5f9] transition-all flex items-center justify-center gap-3 group"
+          className="w-full mb-4 py-3 px-4 bg-white border border-[#e2e8f0] rounded-lg font-semibold text-[#3b82f6] shadow-sm hover:shadow-md hover:bg-[#f8fafc] transition-all flex items-center justify-center gap-3 group"
         >
           <svg className="w-5 h-5" viewBox="0 0 48 48">
             <g>
@@ -142,7 +153,7 @@ export default function SignIn() {
         </button>
         {/* <button
           onClick={() => handleSignIn("twitter")}
-          className="w-full mb-4 py-3 px-4 bg-white border border-[#e0e0e0] rounded-lg font-semibold text-[#234e70] shadow-sm hover:shadow-md hover:bg-[#f1f5f9] transition-all flex items-center justify-center gap-3 group"
+          className="w-full mb-4 py-3 px-4 bg-white border border-[#e2e8f0] rounded-lg font-semibold text-[#3b82f6] shadow-sm hover:shadow-md hover:bg-[#f8fafc] transition-all flex items-center justify-center gap-3 group"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -156,7 +167,7 @@ export default function SignIn() {
         </button> */}
         {/* <button
           onClick={() => handleSignIn("apple")}
-          className="w-full py-3 px-4 bg-white border border-[#e0e0e0] rounded-lg font-semibold text-[#234e70] shadow-sm hover:shadow-md hover:bg-[#f1f5f9] transition-all flex items-center justify-center gap-3 group"
+          className="w-full py-3 px-4 bg-white border border-[#e2e8f0] rounded-lg font-semibold text-[#3b82f6] shadow-sm hover:shadow-md hover:bg-[#f8fafc] transition-all flex items-center justify-center gap-3 group"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -175,11 +186,11 @@ export default function SignIn() {
         </div>
         {/* <p className="text-xs text-[#b0b0b0] text-center mb-2">
           By signing in, you agree to our{" "}
-          <a href="#" className="underline hover:text-[#234e70]">
+          <a href="#" className="underline hover:text-[#3b82f6]">
             Terms of Service
           </a>{" "}
           and{" "}
-          <a href="#" className="underline hover:text-[#234e70]">
+          <a href="#" className="underline hover:text-[#3b82f6]">
             Privacy Policy
           </a>
           .

@@ -1,44 +1,122 @@
+'use client';
+
 import React from "react";
 import DemoPreview from "@/components/ui/demo-preview";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { FiZap } from "react-icons/fi";
+import { FaChrome } from "react-icons/fa";
+import { motion, type Easing, type Variants } from "framer-motion";
 
 const Hero = () => {
+  const easeOut: Easing = [0.16, 1, 0.3, 1];
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0, y: 24 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: easeOut,
+        staggerChildren: 0.12,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: easeOut },
+    },
+  };
+
   return (
-    <section className="min-h-screen flex items-center relative z-10" aria-label="Hero">
-      <div className="container mx-auto px-6 w-full">
+    <section
+      className="min-h-[90vh] flex items-start pt-16 sm:pt-20 lg:pt-24 relative z-10 overflow-hidden"
+      aria-label="Hero"
+    >
+      {/* Large blurred light-blue circle at top right */}
+      <motion.div
+        className="absolute top-0 right-10 w-[80vmin] h-[80vmin] rounded-full opacity-[0.15] blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2"
+        style={{ backgroundColor: "#93c5fd" }}
+        aria-hidden
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 0.15, scale: 1 }}
+        transition={{ duration: 1.2, ease: easeOut }}
+      />
+      {/* Large blurred purple circle at bottom left */}
+      <motion.div
+        className="absolute bottom-10 left-10 w-[80vmin] h-[80vmin] rounded-full opacity-[0.15] blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2"
+        style={{ backgroundColor: "#8e75f2" }}
+        aria-hidden
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 0.15, scale: 1 }}
+        transition={{ duration: 1.2, ease: easeOut, delay: 0.1 }}
+      />
+      <div className="container mx-auto px-6 w-full relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-        <div className="flex-1 max-w-2xl">
+        <motion.div
+          className="flex-1 max-w-2xl"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           <div className="text-center lg:text-left">
-            <p className="text-5xl lg:text-7xl font-bold leading-tight text-[#1a254b] mb-4">
+            <motion.span
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-[#3b82f6] bg-[#eff6ff] border-lg shadow-sm mb-6"
+              aria-hidden
+            >
+              <FiZap className="w-4 h-4 shrink-0" aria-hidden />
+              Read Less Know More
+            </motion.span>
+            <motion.p
+              className="text-5xl lg:text-7xl font-bold leading-tight text-[#1e293b] mb-4"
+              variants={itemVariants}
+            >
               Turn Deep Reads
-            </p>
-            <p className="text-5xl lg:text-7xl font-bold text-[#234e70] mb-6">
+            </motion.p>
+            <motion.p
+              className="text-5xl lg:text-7xl font-bold text-[#1e293b] mb-6"
+              variants={itemVariants}
+            >
               into{" "}
-              <span className="font-extrabold text-[#2563eb]">Quick</span>{" "}
+              <span className="font-extrabold text-[#3b82f6]">Quick</span>{" "}
               Insights
-            </p>
+            </motion.p>
           </div>
 
-          <div className="mt-6 text-center lg:text-left">
-            <p className="text-lg lg:text-xl text-[#3b5b7e] max-w-lg">
+          <motion.div className="mt-6 text-center lg:text-left" variants={itemVariants}>
+            <p className="text-lg lg:text-xl text-[#64748b] max-w-lg">
               Don&apos;t have time to read it all? Just click and get the main
               points — it&apos;s that simple.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mt-8 flex justify-center lg:justify-start">
-            <button className="inline-flex items-center gap-3 px-7 py-3 rounded-xl font-semibold text-lg bg-[#1a254b] text-white 
-              shadow hover:bg-[#234e70] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#234e70] group cursor-pointer"
+          <motion.div className="mt-8 flex justify-center lg:justify-start" variants={itemVariants}>
+            <motion.a
+              href="/extension"
+              className="inline-flex items-center gap-3 px-7 py-3 rounded-xl text-lg text-white bg-gradient-to-r from-[#3b82f6] to-[#a855f7] shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200
+               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3b82f6] group cursor-pointer"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <span>Add To Chrome</span>
+              <FaChrome className="text-white text-xl" aria-hidden />
+              <span>Add To Chrome - Free</span>
               <MdKeyboardArrowRight className="text-white text-2xl group-hover:translate-x-1 transition-transform duration-200" />
-            </button>
-          </div>
-        </div>
+            </motion.a>
+          </motion.div>
+        </motion.div>
 
-        <div className="flex-1 max-w-lg">
+        <motion.div
+          className="flex-1 max-w-lg"
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, ease: easeOut, delay: 0.2 }}
+        >
           <DemoPreview />
-        </div>
+        </motion.div>
         </div>
       </div>
     </section>
