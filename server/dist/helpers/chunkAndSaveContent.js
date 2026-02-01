@@ -49,7 +49,6 @@ const RETRY_DELAY_BASE_MS = 1000; // base delay for exponential backoff
 //   }
 //   throw lastError || new Error("Retry failed");
 // }
-// summarizing a single chunk with timeout
 function summarizeChunk(text, chunkIndex, totalChunks) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!text || text.trim().length === 0) {
@@ -142,7 +141,6 @@ function getStoredChunks(url) {
         }
     });
 }
-// Main function
 function chunkAndSaveContent(content, hashedUrl) {
     return __awaiter(this, void 0, void 0, function* () {
         const startTime = Date.now();
@@ -224,7 +222,6 @@ function chunkAndSaveContent(content, hashedUrl) {
             if (successfulChunks.length === 0) {
                 throw new Error("All chunk summarizations failed");
             }
-            // Generate embeddings
             // console.log("Generating embeddings", {
             //   correlationId,
             //   chunksToEmbed: successfulChunks.length,

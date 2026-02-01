@@ -204,7 +204,7 @@ router.post("/generate-summary", (req, res) => __awaiter(void 0, void 0, void 0,
                 userId: user.id,
             }
         });
-        // Intializing chat 
+        // intializing chat here
         const key = `chat:${user.id}:${hashedUrl}`;
         const chat = {
             messages: []
