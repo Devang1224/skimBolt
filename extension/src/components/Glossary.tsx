@@ -14,7 +14,7 @@ const Glossary = ({
 }:GlossaryProps) => {
   console.log("blogGlossary: ", blogGlossary);
   return (
-    <div className=" bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 shadow-sm overflow-y-auto h-[calc(100vh-170px)] scrollbar_custom">
+    <div className="h-full flex flex-col flex-1 bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-3 shadow-sm overflow-y-auto  scrollbar_custom">
     <h3 className="text-md font-semibold text-slate-800 mb-3 flex items-center space-x-2">
       <MdOutlineMenuBook className="text-purple-500" size={20} />
       <span>Contextual Glossary</span>

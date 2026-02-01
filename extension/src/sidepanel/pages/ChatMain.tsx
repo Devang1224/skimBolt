@@ -7,7 +7,7 @@ import { useSettings } from "../../context/SettingsContext";
 import toast from "react-hot-toast";
 import SummaryLoader from "../../components/ui/SummaryLoader";
 import { checkContentScript } from "../../helpers/helpers";
-
+import { FiZap } from "react-icons/fi";
 
 interface ChatMainTypes {
   authToken: string;
@@ -177,11 +177,24 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-blue-100 p-8 flex flex-col gap-6">
           
-          {/* Hero */}
+          
           <div className="text-center">
-            <h1 className="text-3xl font-extrabold text-blue-600 tracking-tight">
-              SkimBolt ⚡
-            </h1>
+            <div className="flex items-center justify-center gap-2">
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-white shadow-md"
+                style={{
+                  background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
+                }}
+              >
+                 <FiZap className="w-4 h-4" aria-hidden />
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight text-[#1e293b]">
+                Skim
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">
+                  Bolt
+                </span>
+              </h1>
+            </div>
             <p className="mt-2 text-sm text-black/60 leading-relaxed">
               Turn any long article into a crisp, AI-powered summary in seconds.
             </p>
