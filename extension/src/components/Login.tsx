@@ -1,6 +1,3 @@
-import { FiZap } from "react-icons/fi";
-
-
 interface LoginProps {
   isLoading: boolean;
 }
@@ -12,14 +9,13 @@ const Login = ({isLoading}: LoginProps) => {
             className="w-full max-w-sm rounded-2xl border border-skimbolt-card-border bg-skimbolt-card-bg backdrop-blur-xl
                      shadow-[0_20px_40px_var(--color-skimbolt-card-shadow)] p-6 text-center space-y-5"
           >
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-md mx-auto"
-              style={{
-                background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-              }}
-            >
-              <FiZap className="w-4 h-4" aria-hidden />
-            </div>
+            <img
+              src="/skimboltLogo.svg"
+              alt="SkimBolt logo"
+              width={40}
+              height={40}
+              className="rounded-lg shadow-md mx-auto"
+            />
 
             <div className="space-y-1">
               <h1 className="text-2xl font-semibold tracking-tight text-skimbolt-text-primary">

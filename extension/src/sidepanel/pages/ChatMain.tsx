@@ -7,7 +7,6 @@ import { useSettings } from "../../context/SettingsContext";
 import toast from "react-hot-toast";
 import SummaryLoader from "../../components/ui/SummaryLoader";
 import { checkContentScript } from "../../helpers/helpers";
-import { FiZap } from "react-icons/fi";
 
 interface ChatMainTypes {
   authToken: string;
@@ -180,14 +179,13 @@ const ChatMain = ({ authToken }: ChatMainTypes) => {
           
           <div className="text-center">
             <div className="flex items-center justify-center gap-2">
-              <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-white shadow-md"
-                style={{
-                  background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-                }}
-              >
-                 <FiZap className="w-4 h-4" aria-hidden />
-              </div>
+              <img
+                src="/skimboltLogo.svg"
+                alt="SkimBolt logo"
+                width={36}
+                height={36}
+                className="rounded-lg shadow-md"
+              />
               <h1 className="text-3xl font-extrabold tracking-tight text-[#1e293b]">
                 Skim
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">

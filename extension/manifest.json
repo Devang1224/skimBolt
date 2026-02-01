@@ -2,7 +2,9 @@
   "manifest_version": 3,
   "name": "SkimBolt",
   "version": "0.1.1",
+  
   "description": "skimBolt is a chrome extension that allows you to summarize any text on a webpage. ",
+
   "action": {
     "default_title": "SkimBolt"
   },
@@ -26,6 +28,10 @@
      "https://localhost:3000/*"
   ],
   "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
   "externally_connectable":{
      "matches": [
