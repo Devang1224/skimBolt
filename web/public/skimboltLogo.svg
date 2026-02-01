@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SkimBolt logo">
+  <defs>
+    <linearGradient id="skimboltLogoGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"></stop>
+      <stop offset="100%" stop-color="#a855f7"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="32" height="32" rx="8" fill="url(#skimboltLogoGradient)"></rect>
+
+  <path fill="#ffffff" d="M18.2 7.8 10.8 18.2h4.2l-1.4 6 7.6-10.4h-4.2l1.2-6z"></path>
+</svg>

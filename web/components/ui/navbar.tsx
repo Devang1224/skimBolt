@@ -1,10 +1,10 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import { FiZap } from "react-icons/fi";
 import { scrollAndReset } from "@/utils/anchorScrollReset";
 
 declare const chrome: any;
@@ -48,14 +48,14 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center">
             <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
-                style={{
-                  background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-                }}
-              >
-                <FiZap className="w-4 h-4" aria-hidden />
-              </div>
+              <Image
+                src="/skimboltLogo.svg"
+                alt="SkimBolt logo"
+                width={32}
+                height={32}
+                className="rounded-lg"
+                priority
+              />
               <span className="text-xl font-bold text-[#1e293b]">
                 Skim
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#a855f7]">

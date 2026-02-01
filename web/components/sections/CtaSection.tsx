@@ -1,7 +1,7 @@
  "use client";
 
 import { motion } from "framer-motion";
-import { FiZap } from "react-icons/fi";
+import Image from "next/image";
 import { FaChrome } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
@@ -18,13 +18,16 @@ export default function CtaSection() {
         >
           <div className="flex items-center justify-center mb-5">
             <motion.div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
-              style={{
-                background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-              }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md"
               whileHover={{ scale: 1.06 }}
             >
-              <FiZap className="w-5 h-5" aria-hidden />
+              <Image
+                src="/skimboltLogo.svg"
+                alt="SkimBolt logo"
+                width={48}
+                height={48}
+                className="rounded-2xl"
+              />
             </motion.div>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">

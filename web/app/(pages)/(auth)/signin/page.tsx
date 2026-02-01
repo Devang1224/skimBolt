@@ -1,10 +1,10 @@
 "use client";
 import { api } from "@/utils/axoisInstance";
+import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { FiZap } from "react-icons/fi";
 
 declare const chrome: any;
 type Provider = "google" | "twitter" | "apple";
@@ -80,14 +80,13 @@ export default function SignIn() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#eff6ff] via-[#faf5ff] to-[#f8fafc]">
         <div className="bg-white/90 shadow-2xl rounded-2xl px-10 py-12 flex flex-col items-center max-w-md w-full">
           <div className="mb-6 flex flex-col items-center">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-md mb-2"
-              style={{
-                background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-              }}
-            >
-              <FiZap className="w-5 h-5" aria-hidden />
-            </div>
+            <Image
+              src="/skimboltLogo.svg"
+              alt="SkimBolt logo"
+              width={56}
+              height={56}
+              className="rounded-2xl shadow-md mb-2"
+            />
             <h2 className="text-2xl font-bold text-[#1e293b]">
               You are already signed in
             </h2>
@@ -102,14 +101,13 @@ export default function SignIn() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#eff6ff] via-[#faf5ff] to-[#f8fafc]">
       <div className="bg-white/90 shadow-2xl rounded-2xl px-10 py-12 flex flex-col items-center max-w-md w-full">
         <div className="mb-6 flex flex-col items-center">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg mb-3"
-            style={{
-              background: "linear-gradient(to bottom, #3b82f6, #a855f7)",
-            }}
-          >
-            <FiZap className="w-6 h-6" aria-hidden />
-          </div>
+          <Image
+            src="/skimboltLogo.svg"
+            alt="SkimBolt logo"
+            width={64}
+            height={64}
+            className="rounded-2xl shadow-lg mb-3"
+          />
           <h1 className="text-3xl font-bold mb-2 text-[#1e293b]">
             Sign in to SkimBolt
           </h1>
