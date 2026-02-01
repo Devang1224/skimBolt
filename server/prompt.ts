@@ -331,7 +331,8 @@ ${BASE_PROMPT}
     2) Key Points
 
     - Add <h2>Key Points</h2>.
-    - Provide **5–10 bullet points**.
+    - Provide **5–10 bullet points**. (If the content contains more unique factual points, merge only closely related ideas.
+       Do NOT drop standalone facts to meet the bullet limit)
     - Extract only meaningful, factual ideas.
     - No hallucinations.
     - No UI labels (like “share”, “login”, “subscribe”).
@@ -409,17 +410,29 @@ ${BASE_PROMPT}
    ====================================================
    METADATA RULES
    ====================================================
-- Optional object.
 - May include:
-   - word_count (only of the summary and not glossary)
+   - word_count (exact count of visible words in summary HTML)
    - detected_language
    - content_quality indicators
-   - read time
+   - read_time_minutes
 - Must NOT contain:
    - personal information
    - secrets
    - anything outside observable input text
 
+READ TIME CALCULATION RULE:
+- Calculate read time using exactly 200 words per minute.
+- Count only visible text words in the summary HTML.
+- Do NOT count HTML tags or attributes.
+- Round up to the nearest whole minute.
+- Do NOT estimate.
+
+====================================================
+CRITICAL PRIORITY RULE:
+====================================================
+- Completeness > brevity > elegance.
+- If there is a conflict between brevity and preserving information, ALWAYS preserve information.
+- Do NOT drop examples, commands, numbers, steps, or references even if this increases length.
 `
 
 export const summaryChatPrompt = `

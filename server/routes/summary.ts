@@ -215,7 +215,7 @@ router.post("/generate-summary",async(req:Request,res:Response):Promise<any>=>{
             userId:user.id,
         }
     })
-    // Intializing chat 
+    // intializing chat here
     const key = `chat:${user.id}:${hashedUrl}`;
     const chat = {
         messages:[]

@@ -56,7 +56,7 @@ export interface ChunkAndSaveResult {
 
 
 
-// summarizing a single chunk with timeout
+
 async function summarizeChunk(text: string, chunkIndex: number, totalChunks: number): Promise<string> {
   if (!text || text.trim().length === 0) {
     throw new Error("Empty chunk text provided");
@@ -133,10 +133,10 @@ async function batchInsertChunks(
         ) AS t(source_url, content, embedding)
         ON CONFLICT DO NOTHING;
       `;
-      console.log(`Inserted batch ${Math.floor(i / batchSize) + 1}`, {
-        batchSize: batchUrls.length,
-        startIndex: i,
-      });
+      // console.log(`Inserted batch ${Math.floor(i / batchSize) + 1}`, {
+      //   batchSize: batchUrls.length,
+      //   startIndex: i,
+      // });
     } catch (error) {
       console.log(`Failed to insert batch ${Math.floor(i / batchSize) + 1}`, error, {
         batchSize: batchUrls.length,
@@ -150,7 +150,7 @@ async function batchInsertChunks(
 async function getStoredChunks(url:string){
   try{
       const res:{content:string}[] = await prisma.$queryRaw`SELECT content FROM blog_summary_chunks WHERE source_url = ${url} `
-      console.log("SAVED CHUNKS___________: ",res);
+      // console.log("SAVED CHUNKS___________: ",res);
       const storedChunks = res?.map((item)=>item.content);
       return storedChunks ?? [];
   }catch(err){
@@ -159,7 +159,7 @@ async function getStoredChunks(url:string){
   }
 }
 
-// Main function
+
 export async function chunkAndSaveContent(
   content: string,
   hashedUrl: string,
@@ -167,11 +167,11 @@ export async function chunkAndSaveContent(
   const startTime = Date.now();
   const correlationId = `${hashedUrl.substring(0, 8)}-${Date.now()}`;
 
-  console.log("Starting chunk and save process", {
-    correlationId,
-    contentLength: content.length,
-    hashedUrl: hashedUrl.substring(0, 20) + "...",
-  });
+  // console.log("Starting chunk and save process", {
+  //   correlationId,
+  //   contentLength: content.length,
+  //   hashedUrl: hashedUrl.substring(0, 20) + "...",
+  // });
 
   try {
     if (!content || typeof content !== "string") {
@@ -183,10 +183,10 @@ export async function chunkAndSaveContent(
     }
 
     if (content.length > MAX_CONTENT_LENGTH) {
-      console.log("Content exceeds maximum length, truncating", {
-        contentLength: content.length,
-        maxLength: MAX_CONTENT_LENGTH,
-      });
+      // console.log("Content exceeds maximum length, truncating", {
+      //   contentLength: content.length,
+      //   maxLength: MAX_CONTENT_LENGTH,
+      // });
       content = content.substring(0, MAX_CONTENT_LENGTH);
     }
 
@@ -214,19 +214,19 @@ export async function chunkAndSaveContent(
     const chunks = await splitter.splitText(content);
     const totalChunks = chunks.length;
 
-    console.log("content split into chunks", {
-      correlationId,
-      totalChunks,
-      avgChunkSize: Math.round(content.length / totalChunks),
-    });
+    // console.log("content split into chunks", {
+    //   correlationId,
+    //   totalChunks,
+    //   avgChunkSize: Math.round(content.length / totalChunks),
+    // });
 
     // validating chunk count
     if (totalChunks > MAX_CHUNKS) {
-      console.log("chunk count exceeds maximum, processing first N chunks", {
-        correlationId,
-        totalChunks,
-        maxChunks: MAX_CHUNKS,
-      });
+      // console.log("chunk count exceeds maximum, processing first N chunks", {
+      //   correlationId,
+      //   totalChunks,
+      //   maxChunks: MAX_CHUNKS,
+      // });
       chunks.splice(MAX_CHUNKS);
     }
 
@@ -234,10 +234,10 @@ export async function chunkAndSaveContent(
       throw new Error("No chunks generated from content");
     }
 
-    console.log("Starting chunk summarization", {
-      correlationId,
-      chunksToProcess: chunks.length,
-    });
+    // console.log("Starting chunk summarization", {
+    //   correlationId,
+    //   chunksToProcess: chunks.length,
+    // });
 
     const summarizeStartTime = Date.now();
     const summarizedResults = await Promise.allSettled(
@@ -251,23 +251,23 @@ export async function chunkAndSaveContent(
 
     const failedChunks = summarizedResults.filter((result) => result.status === "rejected").length;
 
-    console.log("Chunk summarization completed", {
-      correlationId,
-      successful: successfulChunks.length,
-      failed: failedChunks,
-      durationMs: summarizeDuration,
-      avgTimePerChunk: Math.round(summarizeDuration / chunks.length),
-    });
+    // console.log("Chunk summarization completed", {
+    //   correlationId,
+    //   successful: successfulChunks.length,
+    //   failed: failedChunks,
+    //   durationMs: summarizeDuration,
+    //   avgTimePerChunk: Math.round(summarizeDuration / chunks.length),
+    // });
 
     if (successfulChunks.length === 0) {
       throw new Error("All chunk summarizations failed");
     }
 
-    // Generate embeddings
-   console.log("Generating embeddings", {
-      correlationId,
-      chunksToEmbed: successfulChunks.length,
-    });
+
+   // console.log("Generating embeddings", {
+   //   correlationId,
+   //   chunksToEmbed: successfulChunks.length,
+   // });
 
     const embeddingStartTime = Date.now();
     const embeddings = await withTimeout(
@@ -283,21 +283,21 @@ export async function chunkAndSaveContent(
       );
     }
 
-   console.log("Embeddings generated", {
-      correlationId,
-      embeddingCount: embeddings.length,
-      durationMs: embeddingDuration,
-    });
+   // console.log("Embeddings generated", {
+   //   correlationId,
+   //   embeddingCount: embeddings.length,
+   //   durationMs: embeddingDuration,
+   // });
 
  
     const urlArray = Array(successfulChunks.length).fill(hashedUrl);
 
     // batch insert into database
-    console.log("Inserting chunks into database", {
-      correlationId,
-      chunksToInsert: successfulChunks.length,
-      batches: Math.ceil(successfulChunks.length / DB_BATCH_SIZE),
-    });
+    // console.log("Inserting chunks into database", {
+    //   correlationId,
+    //   chunksToInsert: successfulChunks.length,
+    //   batches: Math.ceil(successfulChunks.length / DB_BATCH_SIZE),
+    // });
 
     const dbStartTime = Date.now();
     await prisma.$executeRaw` DELETE FROM blog_summary_chunks WHERE source_url=${hashedUrl}`; // deleting previous chunks before inserting
@@ -306,16 +306,16 @@ export async function chunkAndSaveContent(
 
     const totalDuration = Date.now() - startTime;
 
-    console.log("Chunk and save process completed successfully", {
-      correlationId,
-      totalChunks,
-      successfulChunks: successfulChunks.length,
-      failedChunks,
-      totalDurationMs: totalDuration,
-      summarizeDurationMs: summarizeDuration,
-      embeddingDurationMs: embeddingDuration,
-      dbDurationMs: dbDuration,
-    });
+    // console.log("Chunk and save process completed successfully", {
+    //   correlationId,
+    //   totalChunks,
+    //   successfulChunks: successfulChunks.length,
+    //   failedChunks,
+    //   totalDurationMs: totalDuration,
+    //   summarizeDurationMs: summarizeDuration,
+    //   embeddingDurationMs: embeddingDuration,
+    //   dbDurationMs: dbDuration,
+    // });
 
     return {
       success: true,
