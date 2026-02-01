@@ -10,7 +10,7 @@ export default function AboutSection() {
     >
       <div className="container mx-auto px-6 w-full">
         <div className="max-w-2xl mx-auto">
-          {/* Card container */}
+
           <div
             className="relative rounded-2xl border bg-white p-8 sm:pl-12 sm:pr-10 sm:py-10 text-center sm:text-left shadow-sm transition-shadow duration-200 hover:shadow-md"
             style={{
@@ -18,7 +18,7 @@ export default function AboutSection() {
               boxShadow: "0 1px 3px rgba(30, 41, 59, 0.06)",
             }}
           >
-            {/* Accent line */}
+
             <div
               className="absolute left-0 top-8 bottom-8 w-1 rounded-full hidden sm:block"
               style={{ backgroundColor: "#3b82f6" }}

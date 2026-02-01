@@ -1,3 +1,6 @@
+ "use client";
+
+import { motion } from "framer-motion";
 import { FiZap } from "react-icons/fi";
 import FeatureGrid from "@/components/ui/feature-grid";
 
@@ -8,7 +11,13 @@ export default function FeaturesSection() {
       aria-labelledby="features-heading"
     >
       <div className="container mx-auto px-6 w-full">
-        <header className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+        <motion.header
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-12"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <span
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-[#3b82f6] bg-[#eff6ff] mb-6"
             aria-hidden
@@ -29,8 +38,15 @@ export default function FeaturesSection() {
             One extension. Six ways to read less and understand more—faster
             summaries, key takeaways, and zero distractions.
           </p>
-        </header>
-        <FeatureGrid />
+        </motion.header>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+        >
+          <FeatureGrid />
+        </motion.div>
       </div>
     </section>
   );

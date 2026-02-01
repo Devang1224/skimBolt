@@ -1,3 +1,6 @@
+ "use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { FiZap } from "react-icons/fi";
 
@@ -5,14 +8,21 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer
+    <motion.footer
       className="py-10 sm:py-12 border-t border-[#e2e8f0] bg-white/50"
       role="contentinfo"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="container mx-auto px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Logo + name */}
-          <div className="flex items-center gap-2">
+          <motion.div
+            className="flex items-center gap-2"
+            whileHover={{ y: -2 }}
+          >
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
               style={{
@@ -27,7 +37,7 @@ export default function Footer() {
                 Bolt
               </span>
             </span>
-          </div>
+          </motion.div>
 
           {/* Links */}
           <nav
@@ -67,6 +77,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

@@ -6,6 +6,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { FiZap } from "react-icons/fi";
 import { FaChrome } from "react-icons/fa";
 import { motion, type Easing, type Variants } from "framer-motion";
+import { scrollAndReset } from "@/utils/anchorScrollReset";
 
 const Hero = () => {
   const easeOut: Easing = [0.16, 1, 0.3, 1];
@@ -34,7 +35,7 @@ const Hero = () => {
 
   return (
     <section
-      className="min-h-[90vh] flex items-start pt-16 sm:pt-20 lg:pt-24 relative z-10 overflow-hidden"
+      className="min-h-[90vh] flex items-start pt-12 sm:pt-20 lg:pt-24 relative z-10 overflow-hidden"
       aria-label="Hero"
     >
       {/* Large blurred light-blue circle at top right */}
@@ -55,10 +56,10 @@ const Hero = () => {
         animate={{ opacity: 0.15, scale: 1 }}
         transition={{ duration: 1.2, ease: easeOut, delay: 0.1 }}
       />
-      <div className="container mx-auto px-6 w-full relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+      <div className="container mx-auto px-4 sm:px-6 w-full relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
         <motion.div
-          className="flex-1 max-w-2xl"
+          className="flex-1 max-w-2xl w-full"
           variants={containerVariants}
           initial="hidden"
           animate="show"
@@ -72,13 +73,13 @@ const Hero = () => {
               Read Less Know More
             </motion.span>
             <motion.p
-              className="text-5xl lg:text-7xl font-bold leading-tight text-[#1e293b] mb-4"
+              className="text-[2.2rem] max-[350px]:text-[2rem] sm:text-5xl lg:text-7xl font-bold leading-tight text-[#1e293b] sm:mb-4"
               variants={itemVariants}
             >
               Turn Deep Reads
             </motion.p>
             <motion.p
-              className="text-5xl lg:text-7xl font-bold text-[#1e293b] mb-6"
+              className="text-[2.2rem] max-[350px]:text-[2rem] sm:text-5xl lg:text-7xl font-bold text-[#1e293b] mb-4 sm:mb-6"
               variants={itemVariants}
             >
               into{" "}
@@ -87,17 +88,20 @@ const Hero = () => {
             </motion.p>
           </div>
 
-          <motion.div className="mt-6 text-center lg:text-left" variants={itemVariants}>
-            <p className="text-lg lg:text-xl text-[#64748b] max-w-lg">
+          <motion.div className="mt-4 sm:mt-6 text-center lg:text-left" variants={itemVariants}>
+            <p className="text-base sm:text-lg lg:text-xl text-[#64748b] max-w-lg mx-auto lg:mx-0">
               Don&apos;t have time to read it all? Just click and get the main
               points — it&apos;s that simple.
             </p>
           </motion.div>
 
-          <motion.div className="mt-8 flex justify-center lg:justify-start" variants={itemVariants}>
+          <motion.div
+            className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start gap-3 justify-center lg:justify-start"
+            variants={itemVariants}
+          >
             <motion.a
               href="/extension"
-              className="inline-flex items-center gap-3 px-7 py-3 rounded-xl text-lg text-white bg-gradient-to-r from-[#3b82f6] to-[#a855f7] shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200
+              className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 rounded-xl text-base sm:text-lg text-white bg-gradient-to-r from-[#3b82f6] to-[#a855f7] shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200
                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3b82f6] group cursor-pointer"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -105,6 +109,17 @@ const Hero = () => {
               <FaChrome className="text-white text-xl" aria-hidden />
               <span>Add To Chrome - Free</span>
               <MdKeyboardArrowRight className="text-white text-2xl group-hover:translate-x-1 transition-transform duration-200" />
+            </motion.a>
+            <motion.a
+              href="/#demo-video"
+              className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 rounded-xl text-base sm:text-lg text-[#1e293b] bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200
+               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3b82f6] group"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={(e) => scrollAndReset(e)}
+            >
+              <span>Watch Demo</span>
+              <MdKeyboardArrowRight className="text-[#1e293b] text-2xl group-hover:translate-x-1 transition-transform duration-200" />
             </motion.a>
           </motion.div>
         </motion.div>
