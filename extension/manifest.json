@@ -24,8 +24,8 @@
     "webNavigation"
   ],
   "host_permissions": [
-     "http://localhost:3000/*",
-     "https://localhost:3000/*"
+     "http://skim-bolt-8c3n.vercel.app/*",
+     "https://skim-bolt-8c3n.vercel.app/*"
   ],
   "icons": {
     "16": "icon16.png",
@@ -35,8 +35,8 @@
   },
   "externally_connectable":{
      "matches": [
-       "http://localhost:3000/*",
-       "https://localhost:3000/*"
+       "http://skim-bolt-8c3n.vercel.app/*",
+       "https://skim-bolt-8c3n.vercel.app/*"
       ] 
   },
   "content_scripts": [
