@@ -34,8 +34,11 @@ export default function SignInClient() {
       if (body.success) {
        
         //  todo: enter secure here
-        document.cookie = `auth-token=${accessToken}; domain=localhost; samesite=strict; max-age=2592000
-                            ${process.env.NODE_ENV === "production" ? "; secure" : ""}`; // 30 days
+        // document.cookie = `auth-token=${accessToken}; domain=localhost; samesite=strict; max-age=2592000
+        //                     ${process.env.NODE_ENV === "production" ? "; secure" : ""}`; // 30 days
+
+        document.cookie = `auth-token=${accessToken}; domain=skim-bolt-8c3n.vercel.app; samesite=strict; max-age=2592000
+                            ${process.env.NODE_ENV === "production" ? "; secure" : ""}`; // 30 days        
 
         console.log("extension_id :: ",process.env.NEXT_PUBLIC_EXTENSION_ID);
         if (
