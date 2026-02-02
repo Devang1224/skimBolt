@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 declare const chrome: any;
+
 type Provider = "google" | "twitter" | "apple";
 
 export default function SignIn() {
@@ -32,7 +33,8 @@ export default function SignIn() {
       if (body.success) {
        
         //  todo: enter secure here
-        document.cookie = `auth-token=${accessToken}; domain=localhost; samesite=strict; max-age=2592000`; // 30 days
+        document.cookie = `auth-token=${accessToken}; domain=localhost; samesite=strict; max-age=2592000
+                            ${process.env.NODE_ENV === "production" ? "; secure" : ""}`; // 30 days
 
         console.log("extension_id :: ",process.env.NEXT_PUBLIC_EXTENSION_ID);
         if (
