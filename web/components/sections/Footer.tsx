@@ -50,6 +50,12 @@ export default function Footer() {
               Extension
             </Link>
             <Link
+              href="/privacy-policy"
+              className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
+            >
+              Privacy Policy
+            </Link>
+            <Link
               href="/signin"
               className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 rounded"
             >
