@@ -1,5 +1,5 @@
 # SkimBolt — AI Blog Summarizer Chrome Extension
-
+(DEMO)[<a href="https://github.com/user-attachments/assets/d0df218e-ef04-4fd9-974b-9ff50b0dc34e">Demo</a>](https://github.com/user-attachments/assets/d0df218e-ef04-4fd9-974b-9ff50b0dc34e)
 ## Project Overview
 SkimBolt is an AI-powered Chrome extension that instantly summarizes long-form blog posts and articles so users can understand key points without reading every word. It solves the problem of information overload by turning lengthy content into clear, bite-sized summaries right inside the browser.
 
