@@ -16,7 +16,9 @@ SkimBolt is an AI-powered Chrome extension that instantly summarizes long-form b
 3. **Output** rendered in the extension UI
 
 ## Demo Video
-Add your demo link here: [Demo Video](https://your-demo-link.example)
+[<a href="https://github.com/user-attachments/assets/d0df218e-ef04-4fd9-974b-9ff50b0dc34e">Demo</a>](https://github.com/user-attachments/assets/d0df218e-ef04-4fd9-974b-9ff50b0dc34e)
+
+
 
 ## Screenshots (Optional)
 Add screenshots here when available.
