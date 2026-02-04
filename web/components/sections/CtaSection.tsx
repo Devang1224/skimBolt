@@ -2,10 +2,18 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { FaChrome } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function CtaSection() {
+
+  const handleAddToChrome = () => {
+    toast.error("The extension is under review by Google. Please wait for it to be approved. Till then you can watch the demo video.");
+    return;
+ 
+   };
+
   return (
     <section className="py-20 bg-gradient-to-br from-[#d9e0f6] via-white to-[#fdf2f8]">
       <div className="w-full text-center px-6">
@@ -43,10 +51,10 @@ export default function CtaSection() {
             the key details and context that matter.
           </p>
           <motion.a
-            href="/extension"
             className="inline-flex items-center gap-3 px-7 py-3 rounded-xl text-lg text-white bg-gradient-to-r from-[#3b82f6] to-[#a855f7] shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3b82f6]"
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
+            onClick={handleAddToChrome}
           >
             <FaChrome className="text-white text-xl" aria-hidden />
             <span>Install Free Chrome Extension</span>
