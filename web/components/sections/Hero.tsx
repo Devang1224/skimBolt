@@ -7,6 +7,7 @@ import { FiZap } from "react-icons/fi";
 import { FaChrome } from "react-icons/fa";
 import { motion, type Easing, type Variants } from "framer-motion";
 import { scrollAndReset } from "@/utils/anchorScrollReset";
+import toast from "react-hot-toast";
 
 const Hero = () => {
   const easeOut: Easing = [0.16, 1, 0.3, 1];
@@ -22,6 +23,12 @@ const Hero = () => {
         staggerChildren: 0.12,
       },
     },
+  };
+
+  const handleAddToChrome = () => {
+   toast.error("The extension is under review by Google. Please wait for it to be approved. Till then you can watch the demo video.");
+   return;
+
   };
 
   const itemVariants: Variants = {
@@ -100,7 +107,7 @@ const Hero = () => {
             variants={itemVariants}
           >
             <motion.a
-              href="/extension"
+              onClick={handleAddToChrome}
               className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 rounded-xl text-base sm:text-lg text-white bg-gradient-to-r from-[#3b82f6] to-[#a855f7] shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200
                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3b82f6] group cursor-pointer"
               whileHover={{ y: -2 }}

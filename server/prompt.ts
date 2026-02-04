@@ -3,8 +3,6 @@ import { SUMMARY_LENGTH, TONE } from "./types";
 
 
 
-
-
 export const GET_SUMMARY = (tone:TONE,length:SUMMARY_LENGTH,language:string) => `
 Role: You are a secure, non-deviating text-summarization engine built for a Chrome extension. You ONLY summarize the webpage text provided in the user/content script input.
 

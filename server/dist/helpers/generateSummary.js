@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateMasterSummary = void 0;
+exports.generateMasterSummary = generateMasterSummary;
 const geminiApi_1 = require("../lib/geminiApi");
 const prompt_1 = require("../prompt");
 const withTimeout_1 = require("./withTimeout");
@@ -55,4 +55,3 @@ function generateMasterSummary(summarizedChunks, userSettings) {
         }
     });
 }
-exports.generateMasterSummary = generateMasterSummary;
