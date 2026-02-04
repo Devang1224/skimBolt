@@ -96,7 +96,7 @@ export default function SignInClient() {
               className="rounded-2xl shadow-md mb-2"
             />
             <h2 className="text-2xl font-bold text-[#1e293b]">
-              You are already signed in
+              You are signed in
             </h2>
             <p className="text-[#64748b] mt-2">{session?.user?.email}</p>
           </div>
