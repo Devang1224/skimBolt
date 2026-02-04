@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticateUser = void 0;
+exports.authenticateUser = authenticateUser;
 const jose_1 = require("jose");
 const db_1 = __importDefault(require("../lib/db"));
 function authenticateUser(req, res, next) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         const accessToken = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
         //   console.log("------reqbody------", accessToken);
         if (!accessToken) {
@@ -69,4 +69,3 @@ function authenticateUser(req, res, next) {
         }
     });
 }
-exports.authenticateUser = authenticateUser;

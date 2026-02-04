@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendExtensionToken = void 0;
+exports.sendExtensionToken = sendExtensionToken;
 const jose_1 = require("jose");
 function sendExtensionToken(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -45,4 +45,3 @@ function sendExtensionToken(req, res) {
         }
     });
 }
-exports.sendExtensionToken = sendExtensionToken;

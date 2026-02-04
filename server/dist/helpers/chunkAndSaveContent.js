@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chunkAndSaveContent = void 0;
+exports.chunkAndSaveContent = chunkAndSaveContent;
 const textsplitters_1 = require("@langchain/textsplitters");
 const geminiApi_1 = require("../lib/geminiApi");
 const prompt_1 = require("../prompt");
@@ -90,8 +90,8 @@ Summarize the following content into a concise, factual summary.
         }
     });
 }
-function batchInsertChunks(urlArray, summarizedChunks, embeddings, batchSize = DB_BATCH_SIZE) {
-    return __awaiter(this, void 0, void 0, function* () {
+function batchInsertChunks(urlArray_1, summarizedChunks_1, embeddings_1) {
+    return __awaiter(this, arguments, void 0, function* (urlArray, summarizedChunks, embeddings, batchSize = DB_BATCH_SIZE) {
         if (urlArray.length !== summarizedChunks.length || urlArray.length !== embeddings.length) {
             throw new Error("Array length mismatch for batch insert");
         }
@@ -286,4 +286,3 @@ function chunkAndSaveContent(content, hashedUrl) {
         }
     });
 }
-exports.chunkAndSaveContent = chunkAndSaveContent;

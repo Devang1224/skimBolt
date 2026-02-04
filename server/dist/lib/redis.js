@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeRedisClient = exports.getRedisClient = void 0;
+exports.getRedisClient = getRedisClient;
+exports.closeRedisClient = closeRedisClient;
 const redis_1 = require("redis");
 let redisClient = null;
 let isConnecting = false;
@@ -54,7 +55,6 @@ function getRedisClient() {
         }
     });
 }
-exports.getRedisClient = getRedisClient;
 function closeRedisClient() {
     return __awaiter(this, void 0, void 0, function* () {
         if (redisClient === null || redisClient === void 0 ? void 0 : redisClient.isOpen) {
@@ -63,5 +63,4 @@ function closeRedisClient() {
         }
     });
 }
-exports.closeRedisClient = closeRedisClient;
 exports.default = getRedisClient;
