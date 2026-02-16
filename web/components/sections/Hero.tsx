@@ -26,7 +26,7 @@ const Hero = () => {
   };
 
   const handleAddToChrome = () => {
-   toast.error("The extension is under review by Google. Please wait for it to be approved. Till then you can watch the demo video.");
+    window.open (`https://chromewebstore.google.com/detail/${process.env.NEXT_PUBLIC_EXTENSION_ID}?utm_source=item-share-cb`,"_blank");
    return;
 
   };
