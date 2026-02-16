@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SkimBolt",
-  "version": "1.0.0",
+  "version": "1.0.2",
   
   "description": "Instantly summarize blog posts and articles on any page with AI-powered highlights.",
 
@@ -19,9 +19,7 @@
     "sidePanel",
     "storage",
     "activeTab",
-    "scripting",
-    "cookies",
-    "webNavigation"
+    "cookies"
   ],
   "host_permissions": [
      "http://skim-bolt.vercel.app/*",  
